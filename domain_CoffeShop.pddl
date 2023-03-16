@@ -11,15 +11,16 @@
     (free ?b - barman)
 	(shaking ?c - cold)
 	(at_drink ?c - cold ?l - location)
-        
+    
 
         
     )
 
     (:functions
         
-        (shaking_time ?b - barman)
-
+        (shaking_time ?c - cold)
+        (distance ?o)
+        (speed ?v)
         
     )
 
@@ -39,39 +40,33 @@
 
     (:process making_cold
         :parameters (?b - barman ?c - cold)
-        :precondition 
+        :precondition (and
 		    (not (free ?b))
-		
+            (shaking ?c)
+        )
         :effect 
-            (increase (shaking_time ?b) (* #t 1))
+            (increase (shaking_time ?c) (* #t 1))
         
     )
 
-    (:event cold_ready
-        :parameters (?b - barman ?c - cold)
-        
-        :precondition 
-            (>= (shaking_time ?b) 3)
-        
-        :effect (and
-		    (assign (shaking_time ?b) 0)
-            (not (shaking ?c))
-        )
-		
-    )
+    
 
     (:action pick_down
         :parameters (?b - barman ?c - cold ?l - bar)
         :precondition (and 
-            (not (shaking ?c))
+            (shaking ?c)
             (not (free ?b))
-            (= (shaking_time ?b) 0)
+            (>= (shaking_time ?c) 3)
             )
         :effect (and
             (free ?b)
 	        (at_drink ?c ?l)
+            (not (shaking ?c))
+            (assign (shaking_time ?c) 0)
+            
 	    )
     )
 
-    
+
+   
 )

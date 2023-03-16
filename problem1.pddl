@@ -1,7 +1,7 @@
 (define (problem problem1)
     (:domain CoffeShop)
    (:objects
-    cold1 - cold
+    cold1 cold2 - cold
     barman - barman
     bar - bar 
     )
@@ -10,16 +10,18 @@
 
         (free barman)
 
-        (= (shaking_time barman) 0)
+        (= (shaking_time cold1) 0)
+        (= (shaking_time cold2) 0)
 
-
+        
 
     )
 
-    (:goal
+    (:goal (and
         (at_drink cold1 bar)
+        (at_drink cold2 bar)
             
-            
+        )   
             
     )
     
