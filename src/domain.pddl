@@ -57,27 +57,28 @@
    (:action assign_move_time
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (at_waiter ?w ?l1) (not (moving ?w)) (free ?w)
+         (at_waiter ?w ?l1) (not (moving ?w)) 
       )
       :effect (and
          (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
-         (moving ?w) (not(free ?w)) )
+         (moving ?w) 
+      )
    )
 
    (:process move
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (at_waiter ?w ?l1)(moving ?w)(not(free ?w))
+         (at_waiter ?w ?l1)(moving ?w)
       )
       :effect (and
-         (decrease (move_time ?w) #t)
+         (decrease (move_time ?w)(* 1 #t))
       )
    )
 
    (:event end_move
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (<= (move_time ?w) 0) (moving ?w) (not(free ?w))
+         (<= (move_time ?w) 0) (moving ?w) 
       )
       :effect (and
          (at_waiter ?w ?l2)
@@ -137,6 +138,7 @@
       )
       :effect (and
          (serving_drink ?d ?w ?t)
+         (not (moving ?w))
          (not (at_drink ?d ?l))
          (not (free ?w))
       )
@@ -153,6 +155,7 @@
       :effect (and
          (at_drink ?d ?t)
          (free ?w)
+         (not (moving ?w))
          ; (drinking ?d ?c)
          (not (serving_drink ?d ?w ?t))
       )
