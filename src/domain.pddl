@@ -64,7 +64,7 @@
       )
    )
 
-   (:action end_move
+   (:event end_move
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
          (<= (move_time ?w) 0)

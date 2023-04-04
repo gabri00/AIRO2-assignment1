@@ -22,14 +22,26 @@
         (= (distance bar table3) 4)
         (= (distance bar table4) 4)
 
+        (= (distance table1 bar) 2)
+        (= (distance table2 bar) 2)
+        (= (distance table3 bar) 4)
+        (= (distance table4 bar) 4)
+
         (= (distance table1 table2) 1)
         (= (distance table1 table3) 1)
         (= (distance table1 table4) 1)
 
+        (= (distance table2 table1) 1)
         (= (distance table2 table3) 1)
         (= (distance table2 table4) 1)
 
+        (= (distance table3 table1) 1)
+        (= (distance table3 table2) 1)
         (= (distance table3 table4) 1)
+
+        (= (distance table4 table1) 1)
+        (= (distance table4 table2) 1)
+        (= (distance table4 table3) 1)
 
         (= (table_area table1) 1)
         (= (table_area table2) 1)
@@ -38,6 +50,7 @@
 
         (= (drinking_time drink1 costumer1) 4)
         (= (drinking_time drink2 costumer2) 4)
+       
 
         ; Problem dependent initial state
         (cold drink1)
