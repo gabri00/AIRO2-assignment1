@@ -22,6 +22,15 @@
         (= (distance bar table3) 4)
         (= (distance bar table4) 4)
 
+        (= (distance table1 table2) 1)
+        (= (distance table1 table3) 1)
+        (= (distance table1 table4) 1)
+
+        (= (distance table2 table3) 1)
+        (= (distance table2 table4) 1)
+
+        (= (distance table3 table4) 1)
+
         (= (table_area table1) 1)
         (= (table_area table2) 1)
         (= (table_area table3) 2)
@@ -46,10 +55,10 @@
 
     (:goal
         (and
-            ; (ready_drink drink1)
-            ; (ready_drink drink2)
-            (at_drink drink1 table2)
-            (at_drink drink2 table2)
+            (ready_drink drink1)
+            (ready_drink drink2)
+            ; (at_drink drink1 table2)
+            ; (at_drink drink2 table2)
 
             ; (cleaned table3)
             ; (cleaned table4)

@@ -60,18 +60,19 @@
          (at_waiter ?w ?l1)
       )
       :effect (and
-         (decrease (distance ?l1 ?l2) (* #t 2))
+         (decrease (move_time ?w) #t)
       )
    )
 
    (:action end_move
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (<= (distance ?l1 ?l2) 0)
+         (<= (move_time ?w) 0)
       )
       :effect (and
          (at_waiter ?w ?l2)
          (not (at_waiter ?w ?l1))
+         (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
       )
    )
 
@@ -138,7 +139,6 @@
          (at_waiter ?w ?t)
          (at_costumer ?c ?t)
          (not (free ?w))
-         ; (<= (move_time ?w) 0)
       )
       :effect (and
          (at_drink ?d ?t)
