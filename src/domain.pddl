@@ -66,9 +66,10 @@
    )
 
    (:process move
-      :parameters (?w - waiter ?l1 ?l2 - location)
+      :parameters (?w - waiter )
       :precondition (and
-         (at_waiter ?w ?l1)(moving ?w)
+         (moving ?w)
+         (> (move_time ?w) 0)
       )
       :effect (and
          (decrease (move_time ?w)(* 1 #t))
