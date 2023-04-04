@@ -79,7 +79,7 @@
    (:event end_move
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (<= (move_time ?w) 0) (moving ?w) 
+         (<= (move_time ?w) 0) (moving ?w) (at_waiter ?w ?l1)
       )
       :effect (and
          (at_waiter ?w ?l2)
