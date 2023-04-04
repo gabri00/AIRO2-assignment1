@@ -54,10 +54,19 @@
       (cooling_time ?d - drink)
    )
    
+   (:action assign_move_time
+      :parameters (?w - waiter ?l1 ?l2 - location)
+      :precondition (and
+         (at_waiter ?w ?l1) (not (moving ?w))
+      :effect (and
+         (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
+         (moving ?w))
+   )
+
    (:process move
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (at_waiter ?w ?l1)
+         (at_waiter ?w ?l1)(moving ?w)
       )
       :effect (and
          (decrease (move_time ?w) #t)
@@ -72,7 +81,7 @@
       :effect (and
          (at_waiter ?w ?l2)
          (not (at_waiter ?w ?l1))
-         (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
+         (not (moving ?w))
       )
    )
 

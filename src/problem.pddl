@@ -68,10 +68,10 @@
 
     (:goal
         (and
-            (ready_drink drink1)
-            (ready_drink drink2)
-            ; (at_drink drink1 table2)
-            ; (at_drink drink2 table2)
+            ; (ready_drink drink1)
+            ; (ready_drink drink2)
+            (at_drink drink1 table2)
+            (at_drink drink2 table2)
 
             ; (cleaned table3)
             ; (cleaned table4)
