@@ -57,7 +57,7 @@
    (:action assign_move_time
       :parameters (?w - waiter ?l1 ?l2 - location)
       :precondition (and
-         (at_waiter ?w ?l1) (not (moving ?w))
+         (at_waiter ?w ?l1) (not (moving ?w)))
       :effect (and
          (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
          (moving ?w))
