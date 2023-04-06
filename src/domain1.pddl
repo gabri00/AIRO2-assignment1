@@ -1,4 +1,4 @@
-(define (domain CoffeeShop)
+(define (domain CoffeeShop_2)
 
    (:requirements
       :strips                    ;basic actions
@@ -27,22 +27,14 @@
       ; Spatial predicates
       (at_drink ?d - drink ?l - location)
       (at_waiter ?w - waiter ?l - location)
-      ; (at_biscuit ?f - biscuit ?l - location)
-      ; (at_costumer ?c - costumer ?t - table)
+      (at_costumer ?c - costumer ?t - table)
 
       (free ?r - robot)
 
-      (moving_to_table ?t - table)
       (prepare_drink ?d - drink)
       (serving_drink ?d - drink ?w - waiter ?t - table)
-      ; (serving_biscuit ?f - biscuit ?w - waiter ?t - table)
-      ; (drinking ?d - drink ?c - customer)
 
       (ready_drink ?d - drink)
-      (served_drink ?d - drink ?t - table)
-
-      ; (to_clean ?t - table)
-      ; (cleaned ?t - table)
    )
 
    (:functions
@@ -50,49 +42,48 @@
       (table_area ?t - table)
       (prep_time ?d - drink)
       (move_time ?w - waiter) ; distance / speed
-      ; (drinking_time ?d - drink ?c - customer)
-      ; (cleaning_time ?t - table)
-      ; (cooling_time ?d - drink)
+      (drinking_time ?d - drink ?c - customer)
+      (cleaning_time ?t - table)
+      (cooling_time ?d - drink)
    )
+   
+   ; (:action move_occupied
+   ;    :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
+   ;    :precondition (and
+   ;       (ready_drink ?d)
+   ;       (serving_drink ?d ?w ?l2)
+   ;       (at_waiter ?w ?l1)
+   ;    )
+   ;    :effect (and
+   ;       (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
+   ;    )
+   ; )
 
-; MOVING PROCESS
-
-   (:action move_occupied
-      :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
-      :precondition (and
-         (serving_drink ?d ?w ?l2)
-         (at_waiter ?w ?l1)
-      )
-      :effect (and
-         (moving_to_table ?l2)
-         (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
-      )
-   )
-
-   (:process move_occupied_process
-      :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
-      :precondition (and
-         (moving_to_table ?l2)
-      )
-      :effect (and
-         (decrease (move_time ?w) #t)
-      )
-   )
+   ; (:process move_occupied_process
+   ;    :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
+   ;    :precondition (and
+   ;       (ready_drink ?d)
+   ;       (at_waiter ?w ?l1)
+   ;       (serving_drink ?d ?w ?l2)
+   ;       (> (move_time ?w) 0)
+   ;    )
+   ;    :effect (and
+   ;       (decrease (move_time ?w) #t)
+   ;    )
+   ; )
 
    (:action end_move_occupied
       :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
       :precondition (and
-         (moving_to_table ?l2)
-         (<= (move_time ?w) 0)
+         (at_waiter ?w ?l1)
+         (serving_drink ?d ?w ?l2)
+         ; (<= (move_time ?w) 0)
       )
       :effect (and
          (at_waiter ?w ?l2)
          (not (at_waiter ?w ?l1))
-         (not (moving_to_table ?l2))
       )
    )
-
-; PREPARING DRINK
 
    (:action prepare_drink
       :parameters (?d - drink ?b - barman)
@@ -114,7 +105,7 @@
          (prepare_drink ?d)
       )
       :effect (and
-         (decrease (prep_time ?d) #t)
+         (decrease (prep_time ?d) (#t))
       )
    )
 
@@ -122,26 +113,30 @@
       :parameters (?d - drink ?b - barman ?l - bar)
       :precondition (and
          (prepare_drink ?d)
+         (not (free ?b))
          (<= (prep_time ?d) 0)
       )
       :effect (and
          (free ?b)
          (ready_drink ?d)
+         (at_drink ?d ?l)
          (not (prepare_drink ?d))
+         ; (when (cold ?d) (at_biscuit ?f ?l))
+         ; (when (warm ?d) (assign (cooling_time ?d) 4))
       )
    )
-
-; SERVING DRINK
 
    (:action take_drink
       :parameters (?d - drink ?w - waiter ?l - bar ?t - table)
       :precondition (and
          (ready_drink ?d)
+         (at_drink ?d ?l)
          (at_waiter ?w ?l)
          (free ?w)
       )
       :effect (and
          (serving_drink ?d ?w ?t)
+         (not (at_drink ?d ?l))
          (not (free ?w))
       )
    )
@@ -151,15 +146,16 @@
       :precondition (and
          (serving_drink ?d ?w ?t)
          (at_waiter ?w ?t)
+         (at_costumer ?c ?t)
+         (not (free ?w))
       )
       :effect (and
-         (served_drink ?d ?t)
+         (at_drink ?d ?t)
          (free ?w)
+         ; (drinking ?d ?c)
          (not (serving_drink ?d ?w ?t))
       )
    )
-
-; BISCUIT
 
    ; (:action take_biscuit
    ;    :parameters (?f - biscuit ?w - waiter ?l - bar ?t - table)
@@ -194,35 +190,31 @@
    ;    )
    ; )
 
-; DRINKING PROCESS
+   ; ; (:process drinking_process
+   ; ;    :parameters (?c - customer ?d - drink)
+   ; ;    :precondition (and
+   ; ;       (drinking ?d ?c)
+   ; ;       (> (drinking_time ?d ?c) 0)
+   ; ;    )
+   ; ;    :effect (and
+   ; ;       (decrease (drinking_time ?d ?c) #t)
+   ; ;    )
+   ; ; )
 
-   ; (:process drinking_process
-   ;    :parameters (?c - customer ?d - drink)
-   ;    :precondition (and
-   ;       (drinking ?d ?c)
-   ;       (> (drinking_time ?d ?c) 0)
-   ;    )
-   ;    :effect (and
-   ;       (decrease (drinking_time ?d ?c) #t)
-   ;    )
-   ; )
-
-   ; (:action finish_drink
-   ;    :parameters (?c - customer ?d - drink ?t - table)
-   ;    :precondition (and
-   ;       (drinking ?d ?c)
-   ;       (<= (drinking_time ?d ?c) 0)
-   ;    )
-   ;    :effect (and
-   ;       (not (drinking ?d ?c))
-   ;       (to_clean ?t)
-   ;       (assign (move_time ?w) (/ (distance ?l ?t) 2))
-   ;       (assign (drinking_time ?d ?c) 4)
-   ;    )
-   ; )
-
-; CLEANING PROCESS
-
+   ; ; (:action finish_drink
+   ; ;    :parameters (?c - customer ?d - drink ?t - table)
+   ; ;    :precondition (and
+   ; ;       (drinking ?d ?c)
+   ; ;       (<= (drinking_time ?d ?c) 0)
+   ; ;    )
+   ; ;    :effect (and
+   ; ;       (not (drinking ?d ?c))
+   ; ;       (to_clean ?t)
+   ; ;       (assign (move_time ?w) (/ (distance ?l ?t) 2))
+   ; ;       (assign (drinking_time ?d ?c) 4)
+   ; ;    )
+   ; ; )
+ 
    ; (:process clean
    ;    :parameters (?t - table ?w - waiter)
    ;    :precondition (and
@@ -247,9 +239,7 @@
    ;       (not (to_clean ?t))
    ;    )
    ; )
-
-; COOLING PROCESS
-
+   
    ; (:process cooling
    ;    :parameters (?d - drink)
    ;    :precondition (and
