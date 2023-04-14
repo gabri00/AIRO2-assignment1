@@ -54,6 +54,7 @@
         ; Problem dependent initial state
 
         (cold drink1)
+        (cold drink2)
 
         ; (to_clean table3)
         ; (to_clean table4)
@@ -64,8 +65,8 @@
 
     (:goal
         (and
-            (ready_drink drink1)
-            (at_waiter waiter table1)
+            (served_drink drink1 table1)
+            (served_drink drink2 table1)
 
             ; (cleaned table3)
             ; (cleaned table4)

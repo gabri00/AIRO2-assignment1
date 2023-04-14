@@ -33,7 +33,8 @@
       (free ?r - robot)
 
       (moving_to_table ?t - table)
-      (prepare_drink ?d - drink)
+      (moving ?l - location)
+      (preparing_drink ?d - drink)
       (serving_drink ?d - drink ?w - waiter ?t - table)
       ; (serving_biscuit ?f - biscuit ?w - waiter ?t - table)
       ; (drinking ?d - drink ?c - customer)
@@ -55,12 +56,50 @@
       ; (cooling_time ?d - drink)
    )
 
-; MOVING PROCESS
+; MOVING PROCESS FREE
+
+   (:action move
+      :parameters (?w - waiter ?l1 ?l2 - location)
+      :precondition (and
+         (at_waiter ?w ?l1)
+         (free ?w)
+      )
+      :effect (and
+         (moving ?l2)
+         (assign (move_time ?w) (/ (distance ?l1 ?l2) 2))
+      )
+   )
+
+   (:process move_process
+      :parameters (?w - waiter ?l1 ?l2 - location)
+      :precondition (and
+         (moving ?l2)
+      )
+      :effect (and
+         (decrease (move_time ?w) #t)
+      )
+   )
+
+   (:event end_move
+      :parameters (?w - waiter ?l1 ?l2 - location)
+      :precondition (and
+         (moving ?l2)
+         (<= (move_time ?w) 0)
+      )
+      :effect (and
+         (at_waiter ?w ?l2)
+         (not (at_waiter ?w ?l1))
+         (not (moving ?l2))
+      )
+   )
+
+; MOVING PROCESS WITH DRINK
 
    (:action move_occupied
       :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
       :precondition (and
          (serving_drink ?d ?w ?l2)
+         (at_drink ?d ?l1)
          (at_waiter ?w ?l1)
       )
       :effect (and
@@ -79,7 +118,7 @@
       )
    )
 
-   (:action end_move_occupied
+   (:event end_move_occupied
       :parameters (?w - waiter ?d - drink ?l1 - bar ?l2 - table)
       :precondition (and
          (moving_to_table ?l2)
@@ -87,7 +126,9 @@
       )
       :effect (and
          (at_waiter ?w ?l2)
+         (at_drink ?d ?l2)
          (not (at_waiter ?w ?l1))
+         (not (at_drink ?d ?l1))
          (not (moving_to_table ?l2))
       )
    )
@@ -101,43 +142,46 @@
          (not (ready_drink ?d))
       )
       :effect (and
-         (prepare_drink ?d)
+         (preparing_drink ?d)
          (not (free ?b))
-         (when (cold ?d) (assign (prep_time ?d) 3))
-         (when (warm ?d) (assign (prep_time ?d) 5))
+         (assign (prep_time ?d) 3)
+         ; (when (warm ?d) (assign (prep_time ?d) 5))
       )
    )
 
    (:process shake_drink
       :parameters (?d - drink)
       :precondition (and
-         (prepare_drink ?d)
+         (preparing_drink ?d)
+         (> (prep_time ?d) 0)
       )
       :effect (and
          (decrease (prep_time ?d) #t)
       )
    )
 
-   (:action put_on_counter
+   (:event put_on_counter
       :parameters (?d - drink ?b - barman ?l - bar)
       :precondition (and
-         (prepare_drink ?d)
+         (preparing_drink ?d)
          (<= (prep_time ?d) 0)
       )
       :effect (and
          (free ?b)
          (ready_drink ?d)
-         (not (prepare_drink ?d))
+         (at_drink ?d ?l)
+         (not (preparing_drink ?d))
       )
    )
 
 ; SERVING DRINK
 
-   (:action take_drink
+   (:action grab_drink
       :parameters (?d - drink ?w - waiter ?l - bar ?t - table)
       :precondition (and
          (ready_drink ?d)
          (at_waiter ?w ?l)
+         (at_drink ?d ?l)
          (free ?w)
       )
       :effect (and
@@ -151,6 +195,7 @@
       :precondition (and
          (serving_drink ?d ?w ?t)
          (at_waiter ?w ?t)
+         (at_drink ?d ?t)
       )
       :effect (and
          (served_drink ?d ?t)
