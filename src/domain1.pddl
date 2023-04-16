@@ -20,6 +20,8 @@
 
    (:predicates
       ; Drink predicates
+      (cold ?d - drink)
+      (warm ?d - drink)
 
       ; Spatial predicates
       (at_waiter ?l - location)
@@ -128,16 +130,31 @@
 
 ; PREPARE DRINK
 
-   (:action prepare_drink
+   (:action prepare_drink_cold
       :parameters (?d - drink ?b - barman)
       :precondition (and
          (free ?b)
+         (cold ?d)
          (not (ready_drink ?d))
       )
       :effect (and
          (preparing ?d)
          (not (free ?b))
          (assign (prep_time ?d) 3)
+      )
+   )
+
+   (:action prepare_drink_warm
+      :parameters (?d - drink ?b - barman)
+      :precondition (and
+         (free ?b)
+         (warm ?d)
+         (not (ready_drink ?d))
+      )
+      :effect (and
+         (preparing ?d)
+         (not (free ?b))
+         (assign (prep_time ?d) 5)
       )
    )
 
