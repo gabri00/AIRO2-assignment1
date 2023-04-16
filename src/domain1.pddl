@@ -15,6 +15,7 @@
    (:types
       barman waiter - robot
       drink
+      biscuit
       table bar - location
    )
 
@@ -23,9 +24,13 @@
       (cold ?d - drink)
       (warm ?d - drink)
 
+      ; Biscuit predicates
+      (can_serve_biscuit ?bi - biscuit ?d - drink)
+
       ; Spatial predicates
       (at_waiter ?l - location)
       (at_drink ?d - drink ?l - location)
+      (at_biscuit ?bi - biscuit ?l - location)
 
       (free ?r - robot)
 
@@ -38,7 +43,7 @@
       (cleaning ?t - table)
       (preparing ?d - drink)
       (serving_drink ?d - drink ?t - table)
-
+      (serving_biscuit ?bi - biscuit ?d - drink ?t - table)
    )
 
    (:functions
@@ -170,7 +175,7 @@
    )
 
    (:event finish_drink_prep
-      :parameters (?d - drink ?b - barman ?l - bar)
+      :parameters (?d - drink ?b - barman ?l - bar ?bi - biscuit)
       :precondition (and
          (preparing ?d)
          (<= (prep_time ?d) 0)
@@ -179,6 +184,7 @@
          (free ?b)
          (ready_drink ?d)
          (at_drink ?d ?l)
+         (when (cold ?d) (at_biscuit ?bi ?l))
          (not (preparing ?d))
       )
    )
@@ -212,7 +218,7 @@
    )
 
    (:event arrived_drink
-      :parameters (?w - waiter ?d - drink ?from ?to - location)
+      :parameters (?w - waiter ?d - drink ?bi - biscuit ?from ?to - location)
       :precondition (and
          (serving_drink ?d ?to)
          (<= (move_time ?from ?to) 0)
@@ -221,9 +227,57 @@
          (at_waiter ?to)
          (at_drink ?d ?to)
          (free ?w)
+         (when (cold ?d) (can_serve_biscuit ?bi ?d))
          (not (at_waiter ?from))
          (not (at_drink ?d ?from))
          (not (serving_drink ?d ?to))
+      )
+   )
+
+; SERVE BISCUIT
+
+   (:action serve_biscuit
+      :parameters (?w - waiter ?d - drink ?bi - biscuit ?from - bar ?to - table)
+      :precondition (and
+         (at_waiter ?from)
+         (at_biscuit ?bi ?from)
+         (at_drink ?d ?to)
+         (free ?w)
+         (can_serve_biscuit ?bi ?d)
+      )
+      :effect (and
+         (serving_biscuit ?bi ?d ?to)
+         (not (free ?w))
+         (not (can_serve_biscuit ?bi ?d))
+         (assign
+            (move_time ?from ?to)
+            (/ (distance ?from ?to) 2))
+      )
+   )
+
+   (:process move_with_biscuit
+      :parameters (?bi - biscuit ?d - drink ?from - bar ?to - table)
+      :precondition (and
+         (serving_biscuit ?bi ?d ?to)
+      )
+      :effect (and
+         (decrease (move_time ?from ?to) #t)
+      )
+   )
+
+   (:event arrived_biscuit
+      :parameters (?w - waiter ?d - drink ?bi - biscuit ?from ?to - location)
+      :precondition (and
+         (serving_biscuit ?bi ?d ?to)
+         (<= (move_time ?from ?to) 0)
+      )
+      :effect (and
+         (at_waiter ?to)
+         (at_biscuit ?bi ?to)
+         (free ?w)
+         (not (at_waiter ?from))
+         (not (at_biscuit ?bi ?from))
+         (not (serving_biscuit ?bi ?d ?to))
       )
    )
 )

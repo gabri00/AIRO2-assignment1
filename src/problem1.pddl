@@ -6,6 +6,7 @@
         waiter - waiter
         bar - bar
         drink1 drink2 - drink
+        biscuit1 biscuit2 - biscuit
         table1 table2 table3 table4 - table
     )
 
@@ -46,8 +47,8 @@
 
         (at_waiter bar)
 
-        (warm drink1)
-        (warm drink2)
+        (cold drink1)
+        (cold drink2)
     
         ; (to_clean table3)
         ; (to_clean table4)
@@ -57,7 +58,9 @@
         (and
             ; (at_waiter table3)
             (at_drink drink1 table1)
+            (at_biscuit biscuit1 table1)
             (at_drink drink2 table1)
+            (at_biscuit biscuit2 table1)
             ; (cleaned table3)
             ; (cleaned table4)
         )
