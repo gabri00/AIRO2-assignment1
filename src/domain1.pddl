@@ -52,6 +52,7 @@
       (move_time ?from ?to - location)
       (cleaning_time ?t - table)
       (prep_time ?d - drink)
+      (cooling_time ?d - drink)
    )
 
 ; MOVE WAITER
@@ -185,7 +186,32 @@
          (ready_drink ?d)
          (at_drink ?d ?l)
          (when (cold ?d) (at_biscuit ?bi ?l))
+         (when (warm ?d) (assign (cooling_time ?d) 4))
          (not (preparing ?d))
+      )
+   )
+
+; COOLING
+
+   (:process cooling
+      :parameters (?d - drink)
+      :precondition (and
+         (warm ?d)
+         (ready_drink ?d)
+         (> (cooling_time ?d) 0)
+      )
+      :effect (and
+         (decrease (cooling_time ?d) #t)
+      )
+   )
+
+   (:event remake_drink
+      :parameters (?d - drink ?b - barman)
+      :precondition (and
+         (<= (cooling_time ?d) 0)
+      )
+      :effect (and
+         (not (ready_drink ?d))
       )
    )
 
@@ -218,7 +244,7 @@
    )
 
    (:event arrived_drink
-      :parameters (?w - waiter ?d - drink ?bi - biscuit ?from ?to - location)
+      :parameters (?w - waiter ?d - drink ?from ?to - location)
       :precondition (and
          (serving_drink ?d ?to)
          (<= (move_time ?from ?to) 0)
@@ -227,7 +253,6 @@
          (at_waiter ?to)
          (at_drink ?d ?to)
          (free ?w)
-         (when (cold ?d) (can_serve_biscuit ?bi ?d))
          (not (at_waiter ?from))
          (not (at_drink ?d ?from))
          (not (serving_drink ?d ?to))
