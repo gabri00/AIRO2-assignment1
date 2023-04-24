@@ -54,8 +54,6 @@
         ; waiter can't move at start
         (= (steps waiter) 0)
 
-        (= (can_carry waiter) 1)
-
         ; drinks to be served
         (cold drink1) (cold drink2) (cold drink3) (cold drink4)
         (warm drink5) (warm drink6) (warm drink7) (warm drink8)

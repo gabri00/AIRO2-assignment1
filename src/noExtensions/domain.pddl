@@ -51,7 +51,6 @@
       (cleaning_time ?t - table)
       (prep_time ?d - drink)
       (steps ?w)
-      (can_carry ?w)
    )
 
 ; MOVE WAITER

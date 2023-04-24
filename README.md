@@ -9,3 +9,6 @@ First assignment of the Aritifical Intelligence for Robotics 2 course - UniGE.
 *Reference professor*: Mauro Vallati
 
 *Planner*: [ENHSP](https://sites.google.com/view/enhsp/)
+
+# Execution
+Run the script: `./run.bash <domain> <problem>`

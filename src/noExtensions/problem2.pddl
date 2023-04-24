@@ -49,11 +49,8 @@
         ; waiter can't move at start
         (= (steps waiter) 0)
 
-        (= (can_carry waiter) 1)
-
         ; waiter initially free and at bar
-        (free barman)
-        (free waiter)
+        (free barman) (free waiter)
 
         (at_waiter bar)
 

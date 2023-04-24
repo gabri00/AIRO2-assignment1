@@ -16,6 +16,7 @@
       barman waiter - robot
       table bar - location
       drink
+      biscuit
    )
 
    (:predicates
@@ -25,23 +26,25 @@
       (ready_drink ?d - drink)
       (preparing ?d - drink)
       (serving ?d - drink)
+      (at_drink ?d - drink ?l - location)
 
       ; Robot predicates
       (free ?r - robot)
+      (at_waiter ?l - location)
 
       ; Moving predicates
       (connected ?from ?to - location)
       (moving ?from ?to - location)
-
-      ; Position predicates
-      (at_waiter ?l - location)
-      (at_drink ?d - drink ?l - location)
 
       ; Cleaning predicates
       (to_clean ?t - table)
       (cleaning ?t - table)
       (cleaned ?t - table)
    
+      ; Biscuit predicates
+      (pair ?d - drink ?b - biscuit)
+      (at_biscuit ?b - biscuit ?l - location)
+      (serving_biscuit ?b - biscuit)
    )
 
    (:functions
@@ -51,7 +54,6 @@
       (cleaning_time ?t - table)
       (prep_time ?d - drink)
       (steps ?w)
-      (can_carry ?w)
    )
 
 ; MOVE WAITER
@@ -228,6 +230,44 @@
          (free ?w)
          (at_drink ?d ?t)
          (not (serving ?d))
+         (assign (steps ?w) 2)
+      )
+   )
+
+; SERVE BISCUIT
+
+   (:action pick_biscuit
+      :parameters (?w - waiter ?l - bar ?t - table ?b - biscuit ?d - drink)
+      :precondition (and
+         (free ?w)
+         (cold ?d)
+         (at_waiter ?l)
+         (at_biscuit ?b ?l)
+         (at_drink ?d ?t)
+         (pair ?d ?b)
+         (not (serving ?d))
+      )
+      :effect (and
+         (serving_biscuit ?b)
+         (not (free ?w))
+         (not (at_biscuit ?b ?l))
+         (assign (steps ?w) 2)
+      )
+   )
+
+   (:action serve_biscuit
+      :parameters (?w - waiter ?t - table ?d - drink ?b - biscuit)
+      :precondition (and
+         (pair ?d ?b)
+         (at_waiter ?t)
+         (serving_biscuit ?b)
+         (not (free ?w))
+         (not (at_biscuit ?b ?t))
+      )
+      :effect (and
+         (free ?w)
+         (at_biscuit ?b ?t)
+         (not (serving_biscuit ?b))
          (assign (steps ?w) 2)
       )
    )

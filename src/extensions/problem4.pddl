@@ -7,6 +7,7 @@
         bar - bar
         table1 table2 table3 table4 - table
         drink1 drink2 drink3 drink4 drink5 drink6 drink7 drink8 - drink
+        biscuit1 biscuit2 biscuit3 biscuit4 - biscuit
     )
 
     (:init
@@ -54,11 +55,13 @@
         ; waiter can't move at start
         (= (steps waiter) 0)
 
-        (= (can_carry waiter) 1)
-
         ; drinks to be served
         (cold drink1) (cold drink2) (cold drink3) (cold drink4)
         (warm drink5) (warm drink6) (warm drink7) (warm drink8)
+
+        ; biscuits to be served
+        (pair drink1 biscuit1) (pair drink2 biscuit2) (pair drink3 biscuit3) (pair drink4 biscuit4)
+        (at_biscuit biscuit1 bar) (at_biscuit biscuit2 bar) (at_biscuit biscuit3 bar) (at_biscuit biscuit4 bar)
 
         ; tables to be cleaned
         (to_clean table2)
@@ -70,6 +73,9 @@
             (at_drink drink3 table4) (at_drink drink4 table4)
             (at_drink drink5 table3) (at_drink drink6 table3)
             (at_drink drink7 table3) (at_drink drink8 table3)
+
+            (at_biscuit biscuit1 table1) (at_biscuit biscuit2 table1)
+            (at_biscuit biscuit3 table4) (at_biscuit biscuit4 table4)
 
             (cleaned table2)
         )
