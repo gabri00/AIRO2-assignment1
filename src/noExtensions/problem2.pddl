@@ -46,6 +46,11 @@
         (= (table_area table3) 2)
         (= (table_area table4) 1)
 
+        ; waiter can't move at start
+        (= (steps waiter) 0)
+
+        (= (can_carry waiter) 1)
+
         ; waiter initially free and at bar
         (free barman)
         (free waiter)

@@ -9,7 +9,8 @@
         drink1 drink2 drink3 drink4 drink5 drink6 drink7 drink8 - drink
     )
 
-    (:init        ; define connection between locations
+    (:init
+        ; define connection between locations
         (connected bar table1) (connected table1 bar)
         (connected bar table2) (connected table2 bar)
         ; (connected bar table3) (connected table3 bar)
@@ -49,6 +50,11 @@
         (free barman) (free waiter)
 
         (at_waiter bar)
+
+        ; waiter can't move at start
+        (= (steps waiter) 0)
+
+        (= (can_carry waiter) 1)
 
         ; drinks to be served
         (cold drink1) (cold drink2) (cold drink3) (cold drink4)

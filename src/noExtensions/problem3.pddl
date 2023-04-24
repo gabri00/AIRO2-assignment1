@@ -51,6 +51,11 @@
 
         (at_waiter bar)
 
+        ; waiter can't move at start
+        (= (steps waiter) 0)
+
+        (= (can_carry waiter) 1)
+
         ; drinks to be served
         (warm drink1) (warm drink2) (warm drink3) (warm drink4)
 

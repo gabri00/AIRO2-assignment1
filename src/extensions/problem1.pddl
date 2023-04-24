@@ -7,7 +7,6 @@
         bar - bar
         table1 table2 table3 table4 - table
         drink1 drink2 - drink
-        ; biscuit1 biscuit2 - biscuit
     )
 
     (:init
@@ -26,6 +25,7 @@
 
         (connected table3 table4) (connected table4 table3)
 
+        ; define distance between locations
         (= (distance bar table1) 2) (= (distance table1 bar) 2)
         (= (distance bar table2) 2) (= (distance table2 bar) 2)
         ; (= (distance bar table3) 4) (= (distance table3 bar) 4)
@@ -40,27 +40,32 @@
 
         (= (distance table3 table4) 1) (= (distance table4 table3) 1)
 
+        ; define area of tables
         (= (table_area table1) 1)
         (= (table_area table2) 1)
         (= (table_area table3) 2)
         (= (table_area table4) 1)
 
+        ; waiter can't move at start
+        (= (steps waiter) 0)
+
+        (= (can_carry waiter) 1)
+
+        ; waiter initially free and at bar
         (free barman) (free waiter)
 
         (at_waiter bar)
 
+        ; drinks to be served
         (cold drink1) (cold drink2)
 
+        ; tables to be cleaned
         (to_clean table3) (to_clean table4)
-
-        ; (can_serve_biscuit biscuit1 drink1) (can_serve_biscuit biscuit2 drink2)
     )
 
     (:goal
         (and
-            ; (at_waiter table2)
-            (at_drink drink1 table2)  (at_drink drink2 table2)
-            ; (at_biscuit biscuit1 table2) (at_biscuit biscuit2 table2)
+            (at_drink drink1 table2) (at_drink drink2 table2)
 
             (cleaned table3) (cleaned table4)
         )
