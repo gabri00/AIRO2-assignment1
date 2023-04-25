@@ -26,6 +26,9 @@
       (ready_drink ?d - drink)
       (preparing ?d - drink)
       (serving ?d - drink)
+      (cooling ?d - drink)
+      (drinking ?t - table)
+      (finished_drinking ?t - table)
       (at_drink ?d - drink ?l - location)
 
       ; Robot predicates
@@ -40,6 +43,7 @@
       (to_clean ?t - table)
       (cleaning ?t - table)
       (cleaned ?t - table)
+      (clean_request ?t - table)
    
       ; Biscuit predicates
       (pair ?d - drink ?b - biscuit)
@@ -54,6 +58,9 @@
       (cleaning_time ?t - table)
       (prep_time ?d - drink)
       (steps ?w)
+      (cooling_time ?d - drink)
+      (drinking_time ?t - drink)
+      (drinks_to_serve_at_table ?t - table)
    )
 
 ; MOVE WAITER
@@ -231,6 +238,7 @@
          (at_drink ?d ?t)
          (not (serving ?d))
          (assign (steps ?w) 2)
+         (decrease (drinks_to_serve_at_table ?t) 1)
       )
    )
 
@@ -269,6 +277,80 @@
          (at_biscuit ?b ?t)
          (not (serving_biscuit ?b))
          (assign (steps ?w) 2)
+      )
+   )
+
+; COOLING
+
+   ; (:event start_cooling
+   ;    :parameters (?d - drink ?t - table)
+   ;    :precondition (and
+   ;       (warm ?d)
+   ;       (ready_drink ?d)
+   ;       (not (cooling ?d))
+   ;    )
+   ;    :effect (and
+   ;       (cooling ?d)
+   ;       (assign (cooling_time ?d) 4)
+   ;    )
+   ; )   
+
+   ; (:process cooling
+   ;    :parameters (?d - drink)
+   ;    :precondition (and
+   ;       (cooling ?d)
+   ;    )
+   ;    :effect (and
+   ;       (decrease (cooling_time ?d) #t)
+   ;    )
+   ; )
+
+   ; (:event end_cooling
+   ;    :parameters (?d - drink)
+   ;    :precondition (and
+   ;       (cooling ?d)
+   ;       (<= (cooling_time ?d) 0)
+   ;    )
+   ;    :effect (and
+   ;       (not (cooling ?d))
+   ;    )
+   ; )
+
+; DRINKING
+
+   (:action drinking_start
+      :parameters (?t - table)
+      :precondition (and
+         (not (drinking ?t))
+         (not (finished_drinking ?t))
+         (= (drinks_to_serve_at_table ?t) 0)
+      )
+      :effect (and
+         (drinking ?t)
+         (assign (drinking_time ?t) 4)
+      )
+   )
+
+   (:process drinking_process
+      :parameters (?t - table)
+      :precondition (and
+         (drinking ?t)
+      )
+      :effect (and
+         (decrease (drinking_time ?t) #t)
+      )
+   )
+
+   (:event drinking_end
+      :parameters (?t - table)
+      :precondition (and
+         (drinking ?t)
+         (<= (drinking_time ?t) 0)
+      )
+      :effect (and
+         (not (drinking ?t))
+         (finished_drinking ?t)
+         (to_clean ?t)
       )
    )
 )

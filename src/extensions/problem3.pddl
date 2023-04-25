@@ -46,6 +46,10 @@
         (= (table_area table3) 2)
         (= (table_area table4) 1)
 
+        ; number of drinks to serve at table
+        (= (drinks_to_serve_at_table table1) 2)
+        (= (drinks_to_serve_at_table table4) 2)
+
         ; waiter initially free and at bar
         (free barman) (free waiter)
 
@@ -68,7 +72,7 @@
             (at_drink drink1 table1) (at_drink drink2 table1)
             (at_drink drink3 table4) (at_drink drink4 table4)
     
-            (cleaned table3)
+            (cleaned table3) (cleaned table1) (cleaned table4)
         )
     )
 
