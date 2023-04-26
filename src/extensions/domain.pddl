@@ -283,41 +283,56 @@
 
 ; COOLING
 
-   ; (:event start_cooling
-   ;    :parameters (?d - drink ?t - table)
-   ;    :precondition (and
-   ;       (warm ?d)
-   ;       (ready_drink ?d)
-   ;       (not (cooling ?d))
-   ;    )
-   ;    :effect (and
-   ;       (cooling ?d)
-   ;       (assign (cooling_time ?d) 4)
-   ;    )
-   ; )   
+   (:event cooling_start
+      :parameters (?d - drink ?l - bar)
+      :precondition (and
+         (warm ?d)
+         (ready_drink ?d)
+         (at_drink ?d ?l)
+         (not (cold ?d))
+         (not (cooling ?d))
+      )
+      :effect (and
+         (cooling ?d)
+         (assign (cooling_time ?d) 4)
+      )
+   )
 
-   ; (:process cooling
-   ;    :parameters (?d - drink)
-   ;    :precondition (and
-   ;       (cooling ?d)
-   ;    )
-   ;    :effect (and
-   ;       (decrease (cooling_time ?d) #t)
-   ;    )
-   ; )
+   (:process cooling_process
+      :parameters (?d - drink)
+      :precondition (and
+         (cooling ?d)
+      )
+      :effect (and
+         (decrease (cooling_time ?d) #t)
+      )
+   )
 
-   ; (:event end_cooling
-   ;    :parameters (?d - drink)
-   ;    :precondition (and
-   ;       (cooling ?d)
-   ;       (<= (cooling_time ?d) 0)
-   ;    )
-   ;    :effect (and
-   ;       (not (cooling ?d))
-   ;    )
-   ; )
+   (:event cooling_end
+      :parameters (?d - drink)
+      :precondition (and
+         (cooling ?d)
+         (not (serving ?d))
+         (<= (cooling_time ?d) 0)
+      )
+      :effect (and
+         (not (cooling ?d))
+         (not (ready_drink ?d))
+      )
+   )
 
-; DRINKING
+   (:event cooling_cancel
+      :parameters (?d - drink ?t - table)
+      :precondition (and
+         (cooling ?d)
+         (at_drink ?d ?t)
+      )
+      :effect (and
+         (not (cooling ?d))
+      )
+   )
+
+   ; DRINKING
 
    (:action drinking_start
       :parameters (?t - table)
