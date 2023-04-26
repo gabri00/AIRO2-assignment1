@@ -1,15 +1,15 @@
 (define (domain CoffeeShop_2)
 
    (:requirements
-      :strips                    ;basic actions
-      :typing                    ;types for objects
-      :fluents                   ;numeric fluents
-      :negative-preconditions    ;not in preconditions
-      :disjunctive-preconditions ;or in preconditions
-      :universal-preconditions   ;forall and exists in preconditions
-      :equality                  ;equal to compare objects
-      :conditional-effects       ;when in action effects
-      :time                      ;processes and events
+      :strips                    ; basic actions
+      :typing                    ; types for objects
+      :fluents                   ; numeric fluents
+      :negative-preconditions    ; not in preconditions
+      :equality                  ; equal to compare objects
+      :time                      ; processes and events
+      ; :disjunctive-preconditions ; or in preconditions
+      ; :universal-preconditions   ; forall and exists in preconditions
+      ; :conditional-effects       ; when in action effects
    )
 
    (:types
@@ -27,40 +27,42 @@
       (preparing ?d - drink)
       (serving ?d - drink)
       (cooling ?d - drink)
+      (at_drink ?d - drink ?l - location)
+
+      ; Finish drink predicates
       (drinking ?t - table)
       (finished_drinking ?t - table)
-      (at_drink ?d - drink ?l - location)
 
       ; Robot predicates
       (free ?r - robot)
       (at_waiter ?l - location)
 
-      ; Moving predicates
+      ; Move predicates
       (connected ?from ?to - location)
       (moving ?from ?to - location)
 
-      ; Cleaning predicates
+      ; Clean predicates
       (to_clean ?t - table)
       (cleaning ?t - table)
       (cleaned ?t - table)
    
       ; Biscuit predicates
+      (serving_biscuit ?b - biscuit)
       (pair ?d - drink ?b - biscuit)
       (at_biscuit ?b - biscuit ?l - location)
-      (serving_biscuit ?b - biscuit)
    )
 
    (:functions
-      (distance ?from ?to - location)
-      (table_area ?t - table)
-      (move_time ?from ?to - location)
-      (cleaning_time ?t - table)
-      (prep_time ?d - drink)
-      (steps ?w)
-      (cooling_time ?d - drink)
-      (drinking_time ?t - drink)
-      (drinks_to_serve_at_table ?t - table)
-      (biscuits_to_serve_at_table ?t - table)
+      (distance ?from ?to - location)  ; distance between two locations
+      (table_area ?t - table)          ; area of a table
+      (move_time ?from ?to - location) ; time to move between two locations
+      (cleaning_time ?t - table)       ; time to clean a table
+      (prep_time ?d - drink)         ; time to prepare a drink
+      (steps ?w)                    ; number of steps a waiter can do
+      (cooling_time ?d - drink)     ; time to cool a drink
+      (drinking_time ?t - drink)       ; time to drink a drink
+      (drinks_to_serve_at_table ?t - table)     ; number of drinks to serve at a table
+      (biscuits_to_serve_at_table ?t - table)   ; number of biscuits to serve at a table
    )
 
 ; MOVE WAITER
@@ -380,5 +382,4 @@
          (to_clean ?t)
       )
    )
-   
 )
