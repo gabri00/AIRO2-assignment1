@@ -50,6 +50,10 @@
         (= (drinks_to_serve_at_table table1) 2)
         (= (drinks_to_serve_at_table table4) 2)
 
+        ; number of biscuits to serve at table
+        (= (biscuits_to_serve_at_table table1) 0)
+        (= (biscuits_to_serve_at_table table4) 0)
+
         ; waiter initially free and at bar
         (free barman) (free waiter)
 

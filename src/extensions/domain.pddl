@@ -43,7 +43,6 @@
       (to_clean ?t - table)
       (cleaning ?t - table)
       (cleaned ?t - table)
-      (clean_request ?t - table)
    
       ; Biscuit predicates
       (pair ?d - drink ?b - biscuit)
@@ -61,6 +60,7 @@
       (cooling_time ?d - drink)
       (drinking_time ?t - drink)
       (drinks_to_serve_at_table ?t - table)
+      (biscuits_to_serve_at_table ?t - table)
    )
 
 ; MOVE WAITER
@@ -277,6 +277,7 @@
          (at_biscuit ?b ?t)
          (not (serving_biscuit ?b))
          (assign (steps ?w) 2)
+         (decrease (biscuits_to_serve_at_table ?t) 1)
       )
    )
 
@@ -350,7 +351,19 @@
       :effect (and
          (not (drinking ?t))
          (finished_drinking ?t)
+      )
+   )
+
+   (:action clean_request
+      :parameters (?t - table)
+      :precondition (and
+         (finished_drinking ?t)
+         (= (drinks_to_serve_at_table ?t) 0)
+         (= (biscuits_to_serve_at_table ?t) 0)
+      )
+      :effect (and
          (to_clean ?t)
       )
    )
+   
 )

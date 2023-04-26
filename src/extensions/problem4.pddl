@@ -57,6 +57,11 @@
         (= (drinks_to_serve_at_table table3) 4)
         (= (drinks_to_serve_at_table table4) 2)
 
+        ; number of biscuits to serve at table
+        (= (biscuits_to_serve_at_table table1) 2)
+        (= (biscuits_to_serve_at_table table3) 0)
+        (= (biscuits_to_serve_at_table table4) 2)
+
         ; waiter can't move at start
         (= (steps waiter) 0)
 
