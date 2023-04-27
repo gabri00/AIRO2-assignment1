@@ -1,4 +1,4 @@
-(define (domain CoffeeShop_2)
+(define (domain CoffeeShop)
 
    (:requirements
       :strips                    ; basic actions

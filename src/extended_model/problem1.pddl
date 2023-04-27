@@ -1,4 +1,4 @@
-(define (problem CoffeeShop_prob)
+(define (problem CoffeeShop_problem1)
     (:domain CoffeeShop)
 
     (:objects
@@ -6,7 +6,7 @@
         waiter - waiter
         bar - bar
         table1 table2 table3 table4 - table
-        drink1 drink2 drink3 drink4 - drink
+        drink1 drink2 - drink
         biscuit1 biscuit2 - biscuit
     )
 
@@ -48,10 +48,10 @@
         (= (table_area table4) 1)
 
         ; number of drinks to serve at table
-        (= (drinks_to_serve_at_table table3) 4)
+        (= (drinks_to_serve_at_table table2) 2)
 
         ; number of biscuits to serve at table
-        (= (biscuits_to_serve_at_table table3) 2)
+        (= (biscuits_to_serve_at_table table2) 2)
 
         ; waiter can't move at start
         (= (steps waiter) 0)
@@ -63,24 +63,21 @@
 
         ; drinks to be served
         (cold drink1) (cold drink2)
-        (warm drink3) (warm drink4)
 
         ; biscuits to be served
         (pair drink1 biscuit1) (pair drink2 biscuit2)
         (at_biscuit biscuit1 bar) (at_biscuit biscuit2 bar)
 
         ; tables to be cleaned
-        (to_clean table1)
+        (to_clean table3) (to_clean table4)
     )
 
     (:goal
         (and
-            (at_drink drink1 table3) (at_drink drink2 table3)
-            (at_drink drink3 table3) (at_drink drink4 table3)
+            (at_drink drink1 table2) (at_drink drink2 table2)
+            (at_biscuit biscuit1 table2) (at_biscuit biscuit2 table2)
 
-            (at_biscuit biscuit1 table3) (at_biscuit biscuit2 table3)
-
-            (cleaned table1) (cleaned table3)
+            (cleaned table3) (cleaned table4) (cleaned table2)
         )
     )
 
