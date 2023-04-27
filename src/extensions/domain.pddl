@@ -7,9 +7,9 @@
       :negative-preconditions    ; not in preconditions
       :equality                  ; equal to compare objects
       :time                      ; processes and events
+      :conditional-effects       ; when in action effects
       ; :disjunctive-preconditions ; or in preconditions
       ; :universal-preconditions   ; forall and exists in preconditions
-      ; :conditional-effects       ; when in action effects
    )
 
    (:types
@@ -27,6 +27,7 @@
       (preparing ?d - drink)
       (serving ?d - drink)
       (cooling ?d - drink)
+      (cooled ?d - drink)
       (at_drink ?d - drink ?l - location)
 
       ; Finish drink predicates
@@ -50,6 +51,9 @@
       (serving_biscuit ?b - biscuit)
       (pair ?d - drink ?b - biscuit)
       (at_biscuit ?b - biscuit ?l - location)
+
+      ; Flag to prioritize warm drinks
+      (priority_warm)
    )
 
    (:functions
@@ -83,9 +87,8 @@
    )
 
    (:process move_process
-      :parameters (?from ?to - location ?w - waiter)
+      :parameters (?from ?to - location)
       :precondition (and
-         (connected ?from ?to)
          (moving ?from ?to)
       )
       :effect (and
@@ -96,7 +99,6 @@
    (:event move_end
       :parameters (?from ?to - location ?w - waiter)
       :precondition (and
-         (connected ?from ?to)
          (moving ?from ?to)
          (<= (move_time ?from ?to) 0)
       )
@@ -117,6 +119,7 @@
          (to_clean ?t)
          (not (cleaning ?t))
          (not (cleaned ?t))
+         (not (priority_warm))
       )
       :effect (and
          (cleaning ?t)
@@ -126,7 +129,7 @@
       )
    )
 
-   (:process clean_process
+   (:process clean_table_process
       :parameters (?t - table ?w - waiter)
       :precondition (and
          (cleaning ?t)
@@ -161,6 +164,7 @@
          (cold ?d)
          (not (preparing ?d))
          (not (ready_drink ?d))
+         (not (priority_warm))
       )
       :effect (and
          (preparing ?d)
@@ -195,18 +199,20 @@
    )
 
    (:event prep_drink_end
-      :parameters (?d - drink ?b - barman ?l - bar ?w - waiter)
+      :parameters (?d - drink ?l - bar ?w - waiter)
       :precondition (and
          (preparing ?d)
          (<= (prep_time ?d) 0)
       )
       :effect (and
-         (free ?b)
          (ready_drink ?d)
          (at_drink ?d ?l)
+         (when (warm ?d) (priority_warm))
          (not (preparing ?d))
       )
    )
+
+; SERVE DRINK
 
    (:action pick_drink
       :parameters (?d - drink ?l - bar ?w - waiter)
@@ -225,17 +231,16 @@
       )
    )
 
-; SERVE DRINK
-
    (:action serve_drink
-      :parameters (?w - waiter ?d - drink ?t - table)
+      :parameters (?w - waiter ?d - drink ?t - table ?b - barman)
       :precondition (and
-         (at_waiter ?t)
          (serving ?d)
+         (at_waiter ?t)
          (not (free ?w))
          (not (at_drink ?d ?t))
       )
       :effect (and
+         (free ?b)
          (free ?w)
          (at_drink ?d ?t)
          (not (serving ?d))
@@ -252,10 +257,11 @@
          (free ?w)
          (cold ?d)
          (at_waiter ?l)
+         (pair ?d ?b)
          (at_biscuit ?b ?l)
          (at_drink ?d ?t)
-         (pair ?d ?b)
-         (not (serving ?d))
+         (not (serving_biscuit ?b))
+         (not (priority_warm))
       )
       :effect (and
          (serving_biscuit ?b)
@@ -273,6 +279,7 @@
          (serving_biscuit ?b)
          (not (free ?w))
          (not (at_biscuit ?b ?t))
+         (not (priority_warm))
       )
       :effect (and
          (free ?w)
@@ -291,8 +298,10 @@
          (warm ?d)
          (ready_drink ?d)
          (at_drink ?d ?l)
-         (not (cold ?d))
+         (priority_warm)
+         (not (preparing ?d))
          (not (cooling ?d))
+         (not (cooled ?d))
       )
       :effect (and
          (cooling ?d)
@@ -314,12 +323,11 @@
       :parameters (?d - drink)
       :precondition (and
          (cooling ?d)
-         (not (serving ?d))
          (<= (cooling_time ?d) 0)
       )
       :effect (and
+         (cooled ?d)
          (not (cooling ?d))
-         (not (ready_drink ?d))
       )
    )
 
@@ -328,13 +336,15 @@
       :precondition (and
          (cooling ?d)
          (at_drink ?d ?t)
+         (>= (cooling_time ?d) 0)
       )
       :effect (and
          (not (cooling ?d))
+         (not (priority_warm))
       )
    )
 
-   ; DRINKING
+; DRINKING
 
    (:action drinking_start
       :parameters (?t - table)
