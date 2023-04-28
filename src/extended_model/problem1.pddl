@@ -3,7 +3,7 @@
 
     (:objects
         barman - barman
-        waiter - waiter
+        waiter1 waiter2 - waiter
         bar - bar
         table1 table2 table3 table4 - table
         drink1 drink2 - drink
@@ -54,12 +54,16 @@
         (= (biscuits_to_serve_at_table table2) 2)
 
         ; waiter can't move at start
-        (= (steps waiter) 0)
+        (= (steps waiter1) 0)
+        (= (steps waiter2) 0)
 
         ; waiter initially free and at bar
-        (free barman) (free waiter)
+        (free barman) (free waiter1) (free waiter2)
 
-        (at_waiter bar)
+        (at_waiter bar waiter1) (at_waiter bar waiter2)
+
+        (different waiter1 waiter2)
+        (different waiter2 waiter1)
 
         ; drinks to be served
         (cold drink1) (cold drink2)

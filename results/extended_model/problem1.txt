@@ -1,81 +1,127 @@
 Domain parsed
 Problem parsed
 Grounding..
-Grounding Time: 47
+Grounding Time: 56
 Aibr Preprocessing
-|F|:45
-|X|:21
+|F|:92
+|X|:48
 Aibr Preprocessing
-|A|:30
-|P|:20
-|E|:20
+|A|:94
+|P|:41
+|E|:41
 Delta time heuristic model:1.0
 Delta time planning model:1.0
 Delta time search-execution model:1.0
 Delta time validation model:1
-H1 Setup Time (msec): 13
+H1 Setup Time (msec): 23
 Setting horizon to:NaN
 Running Greedy Best First Search
-h(n = s_0)=96.0
- g(n)= 4.0 h(n)=44.0
- g(n)= 5.0 h(n)=40.0
- g(n)= 9.0 h(n)=36.0
- g(n)= 11.0 h(n)=20.0
- g(n)= 12.0 h(n)=19.0
- g(n)= 14.0 h(n)=17.0
- g(n)= 19.0 h(n)=11.0
- g(n)= 26.0 h(n)=7.0
- g(n)= 28.0 h(n)=6.0
- g(n)= 29.0 h(n)=3.0
- g(n)= 31.0 h(n)=1.0
- g(n)= 32.0 h(n)=0.0
+h(n = s_0)=250.0
+ g(n)= 4.0 h(n)=134.0
+ g(n)= 5.0 h(n)=111.0
+ g(n)= 7.0 h(n)=65.0
+ g(n)= 12.0 h(n)=62.0
+ g(n)= 13.0 h(n)=58.0
+ g(n)= 16.0 h(n)=56.0
+ g(n)= 17.0 h(n)=55.0
+ g(n)= 18.0 h(n)=52.0
+ g(n)= 23.0 h(n)=50.0
+ g(n)= 28.0 h(n)=34.0
+ g(n)= 31.0 h(n)=29.0
+ g(n)= 33.0 h(n)=28.0
+ g(n)= 34.0 h(n)=27.0
+ g(n)= 35.0 h(n)=24.0
+ g(n)= 36.0 h(n)=23.0
+ g(n)= 41.0 h(n)=21.0
+ g(n)= 45.0 h(n)=12.0
+ g(n)= 42.0 h(n)=10.0
+ g(n)= 43.0 h(n)=8.0
+ g(n)= 44.0 h(n)=5.0
+ g(n)= 56.0 h(n)=3.0
+ g(n)= 57.0 h(n)=2.0
+ g(n)= 60.0 h(n)=0.0
 Extracting plan with execution delta: 1.0
 Problem Solved
 
 Found Plan:
-0: (prep_drink_cold_start drink1 barman)
+0: (prep_drink_cold_start drink2 barman)
 0: -----waiting---- [3.0]
-3.0: (prep_drink_end drink1 barman bar waiter)
-3.0: (pick_drink drink1 bar waiter)
-3.0: (prep_drink_cold_start drink2 barman)
-3.0: -----waiting---- [6.0]
-6.0: (prep_drink_end drink2 barman bar waiter)
-6.0: (move_start bar table2 waiter)
-6.0: -----waiting---- [7.0]
-7.0: (move_end bar table2 waiter)
-7.0: (serve_drink waiter drink1 table2)
-7.0: (move_start table2 table4 waiter)
-7.0: -----waiting---- [8.0]
-8.0: (move_end table2 table4 waiter)
-8.0: (clean_table_start table4 waiter)
-8.0: -----waiting---- [10.0]
-10.0: (clean_table_end table4 waiter)
-10.0: (move_start table4 table3 waiter)
-10.0: -----waiting---- [11.0]
-11.0: (move_end table4 table3 waiter)
-11.0: (clean_table_start table3 waiter)
-11.0: -----waiting---- [15.0]
-15.0: (clean_table_end table3 waiter)
-15.0: (move_start table3 table2 waiter)
-15.0: -----waiting---- [16.0]
-16.0: (move_end table3 table2 waiter)
-16.0: (move_start table2 bar waiter)
+3.0: (prep_drink_end drink2 bar)
+3.0: (pick_drink drink2 bar waiter1 waiter2)
+3.0: (move_start bar table2 waiter1)
+3.0: -----waiting---- [4.0]
+4.0: (move_end bar table2 waiter1)
+4.0: (serve_drink waiter1 waiter2 drink2 table2 barman)
+4.0: (pick_biscuit waiter2 waiter1 bar table2 biscuit2 drink2)
+4.0: (move_start bar table2 waiter2)
+4.0: -----waiting---- [5.0]
+5.0: (move_end bar table2 waiter2)
+5.0: (move_start table2 table4 waiter1)
+5.0: -----waiting---- [6.0]
+6.0: (move_end table2 table4 waiter1)
+6.0: (clean_table_start table4 waiter1 waiter2)
+6.0: -----waiting---- [8.0]
+8.0: (clean_table_end table4 waiter1)
+8.0: (move_start table4 table3 waiter1)
+8.0: -----waiting---- [9.0]
+9.0: (move_end table4 table3 waiter1)
+9.0: (clean_table_start table3 waiter1 waiter2)
+9.0: -----waiting---- [13.0]
+13.0: (clean_table_end table3 waiter1)
+13.0: (move_start table3 table1 waiter1)
+13.0: (prep_drink_cold_start drink1 barman)
+13.0: -----waiting---- [14.0]
+14.0: (move_end table3 table1 waiter1)
+14.0: -----waiting---- [16.0]
+16.0: (prep_drink_end drink1 bar)
+16.0: (move_start table1 bar waiter1)
 16.0: -----waiting---- [17.0]
-17.0: (move_end table2 bar waiter)
-17.0: (pick_drink drink2 bar waiter)
-17.0: (move_start bar table2 waiter)
+17.0: (move_end table1 bar waiter1)
+17.0: (pick_drink drink1 bar waiter1 waiter2)
+17.0: (move_start bar table1 waiter1)
 17.0: -----waiting---- [18.0]
-18.0: (move_end bar table2 waiter)
-18.0: (serve_drink waiter drink2 table2)
+18.0: (move_end bar table1 waiter1)
+18.0: (serve_biscuit waiter2 waiter1 table2 drink2 biscuit2)
+18.0: (move_start table2 bar waiter2)
+18.0: -----waiting---- [19.0]
+19.0: (move_end table2 bar waiter2)
+19.0: (move_start table1 table2 waiter1)
+19.0: -----waiting---- [20.0]
+20.0: (move_end table1 table2 waiter1)
+20.0: (serve_drink waiter1 waiter2 drink1 table2 barman)
+20.0: (pick_biscuit waiter2 waiter1 bar table2 biscuit1 drink1)
+20.0: (move_start bar table2 waiter2)
+20.0: -----waiting---- [21.0]
+21.0: (move_end bar table2 waiter2)
+21.0: (move_start table2 table4 waiter1)
+21.0: (serve_biscuit waiter2 waiter1 table2 drink1 biscuit1)
+21.0: -----waiting---- [22.0]
+22.0: (move_end table2 table4 waiter1)
+22.0: (move_start table4 table2 waiter1)
+22.0: -----waiting---- [23.0]
+23.0: (move_end table4 table2 waiter1)
+23.0: (move_start table2 table3 waiter2)
+23.0: -----waiting---- [24.0]
+24.0: (move_end table2 table3 waiter2)
+24.0: (move_start table3 table1 waiter2)
+24.0: -----waiting---- [25.0]
+25.0: (move_end table3 table1 waiter2)
+25.0: (drinking_start table2)
+25.0: -----waiting---- [29.0]
+29.0: (drinking_end table2)
+29.0: (clean_request table2)
+29.0: (clean_table_start table2 waiter1 waiter2)
+29.0: -----waiting---- [31.0]
+31.0: (clean_table_end table2 waiter1)
 
-Plan-Length:42
-Elapsed Time: 18.0
-Metric (Search):32.0
-Planning Time (msec): 543
-Heuristic Time (msec): 24
-Search Time (msec): 56
-Expanded Nodes:35
-States Evaluated:91
+Plan-Length:80
+Elapsed Time: 31.0
+Metric (Search):60.0
+Planning Time (msec): 2046
+Heuristic Time (msec): 1158
+Search Time (msec): 1408
+Expanded Nodes:11672
+States Evaluated:29874
 Fixed constraint violations during search (zero-crossing):0
-Number of Dead-Ends detected:0
-Number of Duplicates detected:0
+Number of Dead-Ends detected:14190
+Number of Duplicates detected:4208

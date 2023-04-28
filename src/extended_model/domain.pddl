@@ -25,7 +25,7 @@
       (warm ?d - drink)
       (ready_drink ?d - drink)
       (preparing ?d - drink)
-      (serving ?d - drink)
+      (serving ?d - drink ?w - waiter)
       (cooling ?d - drink)
       (cooled ?d - drink)
       (at_drink ?d - drink ?l - location)
@@ -36,19 +36,20 @@
 
       ; Robot predicates
       (free ?r - robot)
-      (at_waiter ?l - location)
+      (at_waiter ?l - location ?w - waiter)
+      (different ?w1 ?w2 - waiter)
 
       ; Move predicates
       (connected ?from ?to - location)
-      (moving ?from ?to - location)
+      (moving ?from ?to - location ?w - waiter)
 
       ; Clean predicates
       (to_clean ?t - table)
-      (cleaning ?t - table)
+      (cleaning ?t - table ?w - waiter)
       (cleaned ?t - table)
    
       ; Biscuit predicates
-      (serving_biscuit ?b - biscuit)
+      (serving_biscuit ?b - biscuit ?w - waiter)
       (pair ?d - drink ?b - biscuit)
       (at_biscuit ?b - biscuit ?l - location)
 
@@ -59,7 +60,7 @@
    (:functions
       (distance ?from ?to - location)  ; distance between two locations
       (table_area ?t - table)          ; area of a table
-      (move_time ?from ?to - location) ; time to move between two locations
+      (move_time ?from ?to - location ?w - waiter) ; time to move between two locations
       (cleaning_time ?t - table)       ; time to clean a table
       (prep_time ?d - drink)         ; time to prepare a drink
       (steps ?w)                    ; number of steps a waiter can do
@@ -75,36 +76,36 @@
       :parameters (?from ?to - location ?w - waiter)
       :precondition (and
          (connected ?from ?to)
-         (at_waiter ?from)
-         (not (moving ?from ?to))
+         (at_waiter ?from ?w)
+         (not (moving ?from ?to ?w))
          (> (steps ?w) 0)
       )
       :effect (and
-         (moving ?from ?to)
-         (not (at_waiter ?from))
-         (assign (move_time ?from ?to) (/ (distance ?from ?to) 2))
+         (moving ?from ?to ?w)
+         (not (at_waiter ?from ?w))
+         (assign (move_time ?from ?to ?w) (/ (distance ?from ?to) 2))
       )
    )
 
    (:process move_process
-      :parameters (?from ?to - location)
+      :parameters (?from ?to - location ?w - waiter)
       :precondition (and
-         (moving ?from ?to)
+         (moving ?from ?to ?w)
       )
       :effect (and
-         (decrease (move_time ?from ?to) #t)
+         (decrease (move_time ?from ?to ?w) #t)
       )
    )
 
    (:event move_end
       :parameters (?from ?to - location ?w - waiter)
       :precondition (and
-         (moving ?from ?to)
-         (<= (move_time ?from ?to) 0)
+         (moving ?from ?to ?w)
+         (<= (move_time ?from ?to ?w) 0)
       )
       :effect (and
-         (at_waiter ?to)
-         (not (moving ?from ?to))
+         (at_waiter ?to ?w)
+         (not (moving ?from ?to ?w))
          (decrease (steps ?w) 1)
       )
    )
@@ -112,19 +113,22 @@
 ; CLEAN TABLE
 
    (:action clean_table_start
-      :parameters (?t - table ?w - waiter)
+      :parameters (?t - table ?w1 ?w2 - waiter)
       :precondition (and
-         (free ?w)
-         (at_waiter ?t)
+         (free ?w1)
+         (at_waiter ?t ?w1)
          (to_clean ?t)
-         (not (cleaning ?t))
+         (different ?w1 ?w2)
+         (not (at_waiter ?t ?w2))
+         (not (cleaning ?t ?w1))
+         (not (cleaning ?t ?w2))
          (not (cleaned ?t))
          (not (priority_warm))
       )
       :effect (and
-         (cleaning ?t)
+         (cleaning ?t ?w1)
          (not (to_clean ?t))
-         (not (free ?w))
+         (not (free ?w1))
          (assign (cleaning_time ?t) (* (table_area ?t) 2))
       )
    )
@@ -132,8 +136,8 @@
    (:process clean_table_process
       :parameters (?t - table ?w - waiter)
       :precondition (and
-         (cleaning ?t)
-         (at_waiter ?t)
+         (cleaning ?t ?w)
+         (at_waiter ?t ?w)
       )
       :effect (and
          (decrease (cleaning_time ?t) #t)
@@ -143,14 +147,14 @@
    (:event clean_table_end
       :parameters (?t - table ?w - waiter)
       :precondition (and
-         (cleaning ?t)
-         (at_waiter ?t)
+         (cleaning ?t ?w)
+         (at_waiter ?t ?w)
          (<= (cleaning_time ?t) 0)
       )
       :effect (and
          (free ?w)
          (cleaned ?t)
-         (not (cleaning ?t))
+         (not (cleaning ?t ?w))
          (assign (steps ?w) 2)
       )
    )
@@ -199,7 +203,7 @@
    )
 
    (:event prep_drink_end
-      :parameters (?d - drink ?l - bar ?w - waiter)
+      :parameters (?d - drink ?l - bar)
       :precondition (and
          (preparing ?d)
          (<= (prep_time ?d) 0)
@@ -215,36 +219,41 @@
 ; SERVE DRINK
 
    (:action pick_drink
-      :parameters (?d - drink ?l - bar ?w - waiter)
+      :parameters (?d - drink ?l - bar ?w1 ?w2 - waiter)
       :precondition (and
-         (free ?w)
-         (at_waiter ?l)
+         (free ?w1)
+         (at_waiter ?l ?w1)
          (ready_drink ?d)
          (at_drink ?d ?l)
-         (not (serving ?d))
+         (different ?w1 ?w2)
+         (not (serving ?d ?w1))
+         (not (serving ?d ?w2))
       )
       :effect (and
-         (serving ?d)
-         (not (free ?w))
+         (serving ?d ?w1)
+         (not (free ?w1))
          (not (at_drink ?d ?l))
-         (assign (steps ?w) 2)
+         (assign (steps ?w1) 2)
       )
    )
 
    (:action serve_drink
-      :parameters (?w - waiter ?d - drink ?t - table ?b - barman)
+      :parameters (?w1 ?w2 - waiter ?d - drink ?t - table ?b - barman)
       :precondition (and
-         (serving ?d)
-         (at_waiter ?t)
-         (not (free ?w))
+         (serving ?d ?w1)
+         (at_waiter ?t ?w1)
+         (different ?w1 ?w2)
+         (not (at_waiter ?t ?w2))
+         (not (serving ?d ?w2))
+         (not (free ?w1))
          (not (at_drink ?d ?t))
       )
       :effect (and
          (free ?b)
-         (free ?w)
+         (free ?w1)
          (at_drink ?d ?t)
-         (not (serving ?d))
-         (assign (steps ?w) 2)
+         (not (serving ?d ?w1))
+         (assign (steps ?w1) 2)
          (decrease (drinks_to_serve_at_table ?t) 1)
       )
    )
@@ -252,40 +261,45 @@
 ; SERVE BISCUIT
 
    (:action pick_biscuit
-      :parameters (?w - waiter ?l - bar ?t - table ?b - biscuit ?d - drink)
+      :parameters (?w1 ?w2 - waiter ?l - bar ?t - table ?b - biscuit ?d - drink)
       :precondition (and
-         (free ?w)
+         (free ?w1)
          (cold ?d)
-         (at_waiter ?l)
+         (at_waiter ?l ?w1)
          (pair ?d ?b)
          (at_biscuit ?b ?l)
          (at_drink ?d ?t)
-         (not (serving_biscuit ?b))
+         (different ?w1 ?w2)
+         (not (serving_biscuit ?b ?w1))
+         (not (serving_biscuit ?b ?w2))
          (not (priority_warm))
       )
       :effect (and
-         (serving_biscuit ?b)
-         (not (free ?w))
+         (serving_biscuit ?b ?w1)
+         (not (free ?w1))
          (not (at_biscuit ?b ?l))
-         (assign (steps ?w) 2)
+         (assign (steps ?w1) 2)
       )
    )
 
    (:action serve_biscuit
-      :parameters (?w - waiter ?t - table ?d - drink ?b - biscuit)
+      :parameters (?w1 ?w2 - waiter ?t - table ?d - drink ?b - biscuit)
       :precondition (and
          (pair ?d ?b)
-         (at_waiter ?t)
-         (serving_biscuit ?b)
-         (not (free ?w))
+         (at_waiter ?t ?w1)
+         (serving_biscuit ?b ?w1)
+         (different ?w1 ?w2)
+         (not (at_waiter ?t ?w2))
+         (not (serving_biscuit ?b ?w2))
+         (not (free ?w1))
          (not (at_biscuit ?b ?t))
          (not (priority_warm))
       )
       :effect (and
-         (free ?w)
+         (free ?w1)
          (at_biscuit ?b ?t)
-         (not (serving_biscuit ?b))
-         (assign (steps ?w) 2)
+         (not (serving_biscuit ?b ?w1))
+         (assign (steps ?w1) 2)
          (decrease (biscuits_to_serve_at_table ?t) 1)
       )
    )
