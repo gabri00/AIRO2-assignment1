@@ -1,0 +1,145 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 116
+Aibr Preprocessing
+|F|:77
+|X|:34
+Aibr Preprocessing
+|A|:47
+|P|:29
+|E|:49
+Delta time heuristic model:0.5
+Delta time planning model:0.5
+Delta time search-execution model:0.5
+Delta time validation model:0.5
+H1 Setup Time (msec): 30
+Setting horizon to:NaN
+Running Greedy Best First Search
+h(n = s_0)=258.0
+ g(n)= 11.0 h(n)=175.0
+ g(n)= 12.0 h(n)=131.0
+ g(n)= 20.0 h(n)=79.0
+ g(n)= 40.0 h(n)=66.0
+ g(n)= 66.0 h(n)=51.0
+ g(n)= 81.0 h(n)=50.0
+ g(n)= 86.0 h(n)=44.0
+ g(n)= 101.0 h(n)=42.0
+ g(n)= 104.0 h(n)=20.0
+ g(n)= 105.0 h(n)=13.0
+ g(n)= 112.0 h(n)=12.0
+ g(n)= 113.0 h(n)=11.0
+ g(n)= 114.0 h(n)=9.0
+ g(n)= 115.0 h(n)=8.0
+ g(n)= 120.0 h(n)=6.0
+ g(n)= 122.0 h(n)=2.0
+ g(n)= 131.0 h(n)=0.0
+Extracting plan with execution delta: 0.5
+Problem Solved
+
+Found Plan:
+0: (prep_drink_warm_start drink1 barman)
+0: -----waiting---- [5.0]
+5.0: (prep_drink_end drink1 bar)
+5.0: (cooling_start drink1 bar)
+5.0: (pick_drink drink1 bar waiter)
+5.0: -----waiting---- [5.5]
+5.5: (move_start bar table2 waiter)
+5.5: -----waiting---- [6.5]
+6.5: (move_end bar table2 waiter)
+6.5: (move_start table2 table1 waiter)
+6.5: -----waiting---- [7.0]
+7.0: (move_end table2 table1 waiter)
+7.0: -----waiting---- [7.5]
+7.5: (serve_drink waiter drink1 table1 barman)
+7.5: (move_start table1 table2 waiter)
+7.5: (cooling_cancel drink1 table1)
+7.5: -----waiting---- [8.0]
+8.0: (move_end table1 table2 waiter)
+8.0: (prep_drink_warm_start drink4 barman)
+8.0: -----waiting---- [13.0]
+13.0: (prep_drink_end drink4 bar)
+13.0: (cooling_start drink4 bar)
+13.0: (move_start table2 bar waiter)
+13.0: -----waiting---- [14.0]
+14.0: (move_end table2 bar waiter)
+14.0: (pick_drink drink4 bar waiter)
+14.0: (move_start bar table1 waiter)
+14.0: -----waiting---- [15.0]
+15.0: (move_end bar table1 waiter)
+15.0: (move_start table1 table4 waiter)
+15.0: -----waiting---- [15.5]
+15.5: (move_end table1 table4 waiter)
+15.5: -----waiting---- [16.5]
+16.5: (serve_drink waiter drink4 table4 barman)
+16.5: (move_start table4 table1 waiter)
+16.5: (cooling_cancel drink4 table4)
+16.5: -----waiting---- [17.0]
+17.0: (move_end table4 table1 waiter)
+17.0: (prep_drink_warm_start drink3 barman)
+17.0: -----waiting---- [22.0]
+22.0: (prep_drink_end drink3 bar)
+22.0: (cooling_start drink3 bar)
+22.0: -----waiting---- [22.5]
+22.5: (move_start table1 bar waiter)
+22.5: -----waiting---- [23.5]
+23.5: (move_end table1 bar waiter)
+23.5: (pick_drink drink3 bar waiter)
+23.5: (move_start bar table1 waiter)
+23.5: -----waiting---- [24.5]
+24.5: (move_end bar table1 waiter)
+24.5: (move_start table1 table4 waiter)
+24.5: -----waiting---- [25.0]
+25.0: (move_end table1 table4 waiter)
+25.0: (serve_drink waiter drink3 table4 barman)
+25.0: (drinking_start table4)
+25.0: (cooling_cancel drink3 table4)
+25.0: -----waiting---- [29.0]
+29.0: (drinking_end table4)
+29.0: (clean_request table4)
+29.0: (clean_table_start table4 waiter)
+29.0: -----waiting---- [31.0]
+31.0: (clean_table_end table4 waiter)
+31.0: (move_start table4 table1 waiter)
+31.0: -----waiting---- [31.5]
+31.5: (move_end table4 table1 waiter)
+31.5: (clean_request table4)
+31.5: (prep_drink_warm_start drink2 barman)
+31.5: -----waiting---- [36.0]
+36.0: (move_start table1 bar waiter)
+36.0: -----waiting---- [36.5]
+36.5: (prep_drink_end drink2 bar)
+36.5: (cooling_start drink2 bar)
+36.5: -----waiting---- [37.0]
+37.0: (move_end table1 bar waiter)
+37.0: (pick_drink drink2 bar waiter)
+37.0: (move_start bar table1 waiter)
+37.0: -----waiting---- [38.0]
+38.0: (move_end bar table1 waiter)
+38.0: (serve_drink waiter drink2 table1 barman)
+38.0: (drinking_start table1)
+38.0: (cooling_cancel drink2 table1)
+38.0: -----waiting---- [42.0]
+42.0: (drinking_end table1)
+42.0: (clean_request table1)
+42.0: (clean_table_start table1 waiter)
+42.0: -----waiting---- [44.0]
+44.0: (clean_table_end table1 waiter)
+44.0: (move_start table1 table3 waiter)
+44.0: -----waiting---- [44.5]
+44.5: (move_end table1 table3 waiter)
+44.5: (clean_table_start table3 waiter)
+44.5: -----waiting---- [48.5]
+48.5: (clean_table_end table3 waiter)
+
+Plan-Length:162
+Elapsed Time: 48.5
+Metric (Search):131.0
+Planning Time (msec): 8888
+Heuristic Time (msec): 5926
+Search Time (msec): 7087
+Expanded Nodes:38425
+States Evaluated:121900
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:16493
+Number of Duplicates detected:10343

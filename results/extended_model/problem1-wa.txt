@@ -1,0 +1,94 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 110
+Aibr Preprocessing
+|F|:63
+|X|:31
+Aibr Preprocessing
+|A|:49
+|P|:22
+|E|:22
+Delta time heuristic model:0.5
+Delta time planning model:0.5
+Delta time search-execution model:0.5
+Delta time validation model:0.5
+H1 Setup Time (msec): 45
+Setting horizon to:NaN
+Running WA-STAR
+h(n = s_0)=250.0
+f(n) = 250.0 (Expanded Nodes: 0, Evaluated States: 0, Time: 0.032) Frontier Size: 0
+f(n) = 793.0 (Expanded Nodes: 1, Evaluated States: 2, Time: 0.062) Frontier Size: 1
+Extracting plan with execution delta: 0.5
+Problem Solved
+
+Found Plan:
+0: (prep_drink_cold_start drink2 barman)
+0: -----waiting---- [3.0]
+3.0: (prep_drink_end drink2 bar)
+3.0: (pick_drink drink2 bar waiter)
+3.0: (move_start bar table2 waiter)
+3.0: -----waiting---- [4.0]
+4.0: (move_end bar table2 waiter)
+4.0: (serve_drink waiter drink2 table2 barman)
+4.0: (prep_drink_cold_start drink1 barman)
+4.0: -----waiting---- [7.0]
+7.0: (prep_drink_end drink1 bar)
+7.0: (move_start table2 table4 waiter)
+7.0: -----waiting---- [7.5]
+7.5: (move_end table2 table4 waiter)
+7.5: (clean_table_start table4 waiter)
+7.5: -----waiting---- [9.5]
+9.5: (clean_table_end table4 waiter)
+9.5: (move_start table4 table2 waiter)
+9.5: -----waiting---- [10.0]
+10.0: (move_end table4 table2 waiter)
+10.0: (move_start table2 bar waiter)
+10.0: -----waiting---- [11.0]
+11.0: (move_end table2 bar waiter)
+11.0: (pick_drink drink1 bar waiter)
+11.0: (move_start bar table2 waiter)
+11.0: -----waiting---- [12.0]
+12.0: (move_end bar table2 waiter)
+12.0: (serve_drink waiter drink1 table2 barman)
+12.0: (move_start table2 bar waiter)
+12.0: -----waiting---- [13.0]
+13.0: (move_end table2 bar waiter)
+13.0: (pick_biscuit waiter bar table2 biscuit1 drink1)
+13.0: (move_start bar table2 waiter)
+13.0: -----waiting---- [14.0]
+14.0: (move_end bar table2 waiter)
+14.0: (serve_biscuit waiter table2 drink1 biscuit1)
+14.0: (move_start table2 bar waiter)
+14.0: -----waiting---- [15.0]
+15.0: (move_end table2 bar waiter)
+15.0: (pick_biscuit waiter bar table2 biscuit2 drink2)
+15.0: (move_start bar table2 waiter)
+15.0: -----waiting---- [16.0]
+16.0: (move_end bar table2 waiter)
+16.0: (serve_biscuit waiter table2 drink2 biscuit2)
+16.0: (drinking_start table2)
+16.0: -----waiting---- [20.0]
+20.0: (drinking_end table2)
+20.0: (clean_request table2)
+20.0: (clean_table_start table2 waiter)
+20.0: -----waiting---- [22.0]
+22.0: (clean_table_end table2 waiter)
+22.0: (move_start table2 table3 waiter)
+22.0: -----waiting---- [22.5]
+22.5: (move_end table2 table3 waiter)
+22.5: (clean_table_start table3 waiter)
+22.5: -----waiting---- [26.5]
+26.5: (clean_table_end table3 waiter)
+
+Plan-Length:94
+Elapsed Time: 26.5
+Metric (Search):78.0
+Planning Time (msec): 2037
+Heuristic Time (msec): 198
+Search Time (msec): 334
+Expanded Nodes:924
+States Evaluated:2322
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:243
+Number of Duplicates detected:259

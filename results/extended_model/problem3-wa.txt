@@ -1,0 +1,125 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 143
+Aibr Preprocessing
+|F|:77
+|X|:34
+Aibr Preprocessing
+|A|:47
+|P|:29
+|E|:49
+Delta time heuristic model:0.5
+Delta time planning model:0.5
+Delta time search-execution model:0.5
+Delta time validation model:0.5
+H1 Setup Time (msec): 29
+Setting horizon to:NaN
+Running WA-STAR
+h(n = s_0)=258.0
+f(n) = 258.0 (Expanded Nodes: 0, Evaluated States: 0, Time: 0.032) Frontier Size: 0
+f(n) = 1321.0 (Expanded Nodes: 1, Evaluated States: 4, Time: 0.064) Frontier Size: 3
+Extracting plan with execution delta: 0.5
+Problem Solved
+
+Found Plan:
+0: (prep_drink_warm_start drink1 barman)
+0: -----waiting---- [5.0]
+5.0: (prep_drink_end drink1 bar)
+5.0: (cooling_start drink1 bar)
+5.0: (pick_drink drink1 bar waiter)
+5.0: (move_start bar table1 waiter)
+5.0: -----waiting---- [6.0]
+6.0: (move_end bar table1 waiter)
+6.0: (serve_drink waiter drink1 table1 barman)
+6.0: (move_start table1 table2 waiter)
+6.0: (cooling_cancel drink1 table1)
+6.0: -----waiting---- [6.5]
+6.5: (move_end table1 table2 waiter)
+6.5: (prep_drink_warm_start drink4 barman)
+6.5: -----waiting---- [11.5]
+11.5: (prep_drink_end drink4 bar)
+11.5: (cooling_start drink4 bar)
+11.5: (move_start table2 bar waiter)
+11.5: -----waiting---- [12.5]
+12.5: (move_end table2 bar waiter)
+12.5: (pick_drink drink4 bar waiter)
+12.5: (move_start bar table1 waiter)
+12.5: -----waiting---- [13.5]
+13.5: (move_end bar table1 waiter)
+13.5: (move_start table1 table4 waiter)
+13.5: -----waiting---- [14.0]
+14.0: (move_end table1 table4 waiter)
+14.0: (serve_drink waiter drink4 table4 barman)
+14.0: (move_start table4 table1 waiter)
+14.0: (cooling_cancel drink4 table4)
+14.0: -----waiting---- [14.5]
+14.5: (move_end table4 table1 waiter)
+14.5: (prep_drink_warm_start drink3 barman)
+14.5: -----waiting---- [19.5]
+19.5: (prep_drink_end drink3 bar)
+19.5: (cooling_start drink3 bar)
+19.5: (move_start table1 bar waiter)
+19.5: -----waiting---- [20.5]
+20.5: (move_end table1 bar waiter)
+20.5: (pick_drink drink3 bar waiter)
+20.5: (move_start bar table1 waiter)
+20.5: -----waiting---- [21.5]
+21.5: (move_end bar table1 waiter)
+21.5: (move_start table1 table4 waiter)
+21.5: -----waiting---- [22.0]
+22.0: (move_end table1 table4 waiter)
+22.0: (serve_drink waiter drink3 table4 barman)
+22.0: (move_start table4 table3 waiter)
+22.0: (cooling_cancel drink3 table4)
+22.0: -----waiting---- [22.5]
+22.5: (move_end table4 table3 waiter)
+22.5: (clean_table_start table3 waiter)
+22.5: -----waiting---- [23.0]
+23.0: (drinking_start table4)
+23.0: -----waiting---- [26.5]
+26.5: (clean_table_end table3 waiter)
+26.5: (move_start table3 table4 waiter)
+26.5: -----waiting---- [27.0]
+27.0: (move_end table3 table4 waiter)
+27.0: (drinking_end table4)
+27.0: (clean_request table4)
+27.0: (prep_drink_warm_start drink2 barman)
+27.0: -----waiting---- [31.0]
+31.0: (clean_table_start table4 waiter)
+31.0: -----waiting---- [32.0]
+32.0: (prep_drink_end drink2 bar)
+32.0: (cooling_start drink2 bar)
+32.0: -----waiting---- [33.0]
+33.0: (clean_table_end table4 waiter)
+33.0: (move_start table4 table2 waiter)
+33.0: -----waiting---- [33.5]
+33.5: (move_end table4 table2 waiter)
+33.5: (move_start table2 bar waiter)
+33.5: -----waiting---- [34.5]
+34.5: (move_end table2 bar waiter)
+34.5: (pick_drink drink2 bar waiter)
+34.5: (move_start bar table1 waiter)
+34.5: -----waiting---- [35.5]
+35.5: (move_end bar table1 waiter)
+35.5: (serve_drink waiter drink2 table1 barman)
+35.5: (drinking_start table1)
+35.5: (cooling_cancel drink2 table1)
+35.5: -----waiting---- [39.5]
+39.5: (drinking_end table1)
+39.5: (clean_request table1)
+39.5: (clean_table_start table1 waiter)
+39.5: -----waiting---- [41.5]
+41.5: (clean_table_end table1 waiter)
+
+Plan-Length:147
+Elapsed Time: 41.5
+Metric (Search):116.0
+Planning Time (msec): 5706
+Heuristic Time (msec): 3186
+Search Time (msec): 3822
+Expanded Nodes:21057
+States Evaluated:68106
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:8073
+Number of Duplicates detected:6949

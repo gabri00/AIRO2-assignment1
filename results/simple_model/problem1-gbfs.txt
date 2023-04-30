@@ -1,0 +1,81 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 119
+Aibr Preprocessing
+|F|:45
+|X|:21
+Aibr Preprocessing
+|A|:30
+|P|:20
+|E|:20
+Delta time heuristic model:0.5
+Delta time planning model:0.5
+Delta time search-execution model:0.5
+Delta time validation model:0.5
+H1 Setup Time (msec): 57
+Setting horizon to:NaN
+Running Greedy Best First Search
+h(n = s_0)=96.0
+ g(n)= 7.0 h(n)=44.0
+ g(n)= 8.0 h(n)=40.0
+ g(n)= 15.0 h(n)=36.0
+ g(n)= 18.0 h(n)=20.0
+ g(n)= 19.0 h(n)=19.0
+ g(n)= 21.0 h(n)=17.0
+ g(n)= 28.0 h(n)=11.0
+ g(n)= 39.0 h(n)=7.0
+ g(n)= 42.0 h(n)=6.0
+ g(n)= 43.0 h(n)=3.0
+ g(n)= 46.0 h(n)=1.0
+ g(n)= 47.0 h(n)=0.0
+Extracting plan with execution delta: 0.5
+Problem Solved
+
+Found Plan:
+0: (prep_drink_cold_start drink1 barman)
+0: -----waiting---- [3.0]
+3.0: (prep_drink_end drink1 bar barman)
+3.0: (pick_drink drink1 bar waiter)
+3.0: (prep_drink_cold_start drink2 barman)
+3.0: -----waiting---- [6.0]
+6.0: (prep_drink_end drink2 bar barman)
+6.0: (move_start bar table2 waiter)
+6.0: -----waiting---- [7.0]
+7.0: (move_end bar table2 waiter)
+7.0: (serve_drink waiter drink1 table2)
+7.0: (move_start table2 table4 waiter)
+7.0: -----waiting---- [7.5]
+7.5: (move_end table2 table4 waiter)
+7.5: (clean_table_start table4 waiter)
+7.5: -----waiting---- [9.5]
+9.5: (clean_table_end table4 waiter)
+9.5: (move_start table4 table3 waiter)
+9.5: -----waiting---- [10.0]
+10.0: (move_end table4 table3 waiter)
+10.0: (clean_table_start table3 waiter)
+10.0: -----waiting---- [14.0]
+14.0: (clean_table_end table3 waiter)
+14.0: (move_start table3 table2 waiter)
+14.0: -----waiting---- [14.5]
+14.5: (move_end table3 table2 waiter)
+14.5: (move_start table2 bar waiter)
+14.5: -----waiting---- [15.5]
+15.5: (move_end table2 bar waiter)
+15.5: (pick_drink drink2 bar waiter)
+15.5: (move_start bar table2 waiter)
+15.5: -----waiting---- [16.5]
+16.5: (move_end bar table2 waiter)
+16.5: (serve_drink waiter drink2 table2)
+
+Plan-Length:57
+Elapsed Time: 16.5
+Metric (Search):47.0
+Planning Time (msec): 1783
+Heuristic Time (msec): 60
+Search Time (msec): 182
+Expanded Nodes:62
+States Evaluated:148
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:4
+Number of Duplicates detected:0

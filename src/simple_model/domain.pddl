@@ -1,15 +1,15 @@
-(define (domain CoffeeShop_2)
+(define (domain CoffeeShop)
 
    (:requirements
-      :strips                    ;basic actions
-      :typing                    ;types for objects
-      :fluents                   ;numeric fluents
-      :negative-preconditions    ;not in preconditions
-      :disjunctive-preconditions ;or in preconditions
-      :universal-preconditions   ;forall and exists in preconditions
-      :equality                  ;equal to compare objects
-      :conditional-effects       ;when in action effects
-      :time                      ;processes and events
+      :strips ; basic actions
+      :typing ; types for objects
+      :fluents ; numeric fluents
+      :negative-preconditions ; not in preconditions
+      :equality ; equal to compare objects
+      :time ; processes and events
+      :conditional-effects ; when in action effects
+      ; :disjunctive-preconditions ; or in preconditions
+      ; :universal-preconditions   ; forall and exists in preconditions
    )
 
    (:types
@@ -20,40 +20,37 @@
 
    (:predicates
       ; Drink predicates
-      (cold ?d - drink)
-      (warm ?d - drink)
-      (ready_drink ?d - drink)
-      (preparing ?d - drink)
-      (serving ?d - drink)
+      (cold ?d - drink) ; drink is cold
+      (warm ?d - drink) ; drink is warm
+      (ready_drink ?d - drink) ; drink is ready to be served
+      (preparing ?d - drink) ; drink is being prepared
+      (serving ?d - drink) ; drink is being served
+      (at_drink ?d - drink ?l - location) ; drink is at a location
 
       ; Robot predicates
-      (free ?r - robot)
+      (free ?r - robot) ; robot isn't performing any action
+      (at_waiter ?l - location) ; waiter is at a location
 
-      ; Moving predicates
-      (connected ?from ?to - location)
-      (moving ?from ?to - location)
+      ; Move predicates
+      (connected ?from ?to - location) ; two locations are connected
+      (moving ?from ?to - location) ; waiter is moving between two locations
 
-      ; Position predicates
-      (at_waiter ?l - location)
-      (at_drink ?d - drink ?l - location)
-
-      ; Cleaning predicates
-      (to_clean ?t - table)
-      (cleaning ?t - table)
-      (cleaned ?t - table)
-   
+      ; Clean predicates
+      (to_clean ?t - table) ; table needs to be cleaned
+      (cleaning ?t - table) ; waiter is cleaning a table
+      (cleaned ?t - table) ; table has been cleaned
    )
 
    (:functions
-      (distance ?from ?to - location)
-      (table_area ?t - table)
-      (move_time ?from ?to - location)
-      (cleaning_time ?t - table)
-      (prep_time ?d - drink)
-      (steps ?w)
+      (distance ?from ?to - location) ; distance between two locations
+      (table_area ?t - table) ; area of a table
+      (move_time ?from ?to - location) ; time to move between two locations
+      (cleaning_time ?t - table) ; time to clean a table
+      (prep_time ?d - drink) ; time to prepare a drink
+      (steps ?w) ; number of move actions a waiter can perform
    )
 
-; MOVE WAITER
+; MOVE WAITER -> action, process, event (waiter moves between locations only if it has steps left)
 
    (:action move_start
       :parameters (?from ?to - location ?w - waiter)
@@ -66,14 +63,15 @@
       :effect (and
          (moving ?from ?to)
          (not (at_waiter ?from))
-         (assign (move_time ?from ?to) (/ (distance ?from ?to) 2))
+         (assign
+            (move_time ?from ?to)
+            (/ (distance ?from ?to) 2))
       )
    )
 
    (:process move_process
-      :parameters (?from ?to - location ?w - waiter)
+      :parameters (?from ?to - location)
       :precondition (and
-         (connected ?from ?to)
          (moving ?from ?to)
       )
       :effect (and
@@ -84,7 +82,6 @@
    (:event move_end
       :parameters (?from ?to - location ?w - waiter)
       :precondition (and
-         (connected ?from ?to)
          (moving ?from ?to)
          (<= (move_time ?from ?to) 0)
       )
@@ -95,7 +92,7 @@
       )
    )
 
-; CLEAN TABLE
+; CLEAN TABLE -> action, process, event (waiter cleans a table)
 
    (:action clean_table_start
       :parameters (?t - table ?w - waiter)
@@ -114,8 +111,8 @@
       )
    )
 
-   (:process clean_process
-      :parameters (?t - table ?w - waiter)
+   (:process clean_table_process
+      :parameters (?t - table)
       :precondition (and
          (cleaning ?t)
          (at_waiter ?t)
@@ -140,7 +137,7 @@
       )
    )
 
-; PREPARE DRINK
+; PREPARE DRINK -> action, process, event (barman prepares a cold/warm drink)
 
    (:action prep_drink_cold_start
       :parameters (?d - drink ?b - barman)
@@ -183,7 +180,7 @@
    )
 
    (:event prep_drink_end
-      :parameters (?d - drink ?b - barman ?l - bar ?w - waiter)
+      :parameters (?d - drink ?l - bar ?b - barman)
       :precondition (and
          (preparing ?d)
          (<= (prep_time ?d) 0)
@@ -195,6 +192,8 @@
          (not (preparing ?d))
       )
    )
+
+; PICK/SERVE DRINK -> action, action (waiter picks a drink from the bar and serves it to a table)
 
    (:action pick_drink
       :parameters (?d - drink ?l - bar ?w - waiter)
@@ -213,13 +212,11 @@
       )
    )
 
-; SERVE DRINK
-
    (:action serve_drink
       :parameters (?w - waiter ?d - drink ?t - table)
       :precondition (and
-         (at_waiter ?t)
          (serving ?d)
+         (at_waiter ?t)
          (not (free ?w))
          (not (at_drink ?d ?t))
       )

@@ -1,0 +1,244 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 267
+Aibr Preprocessing
+|F|:138
+|X|:44
+Aibr Preprocessing
+|A|:106
+|P|:35
+|E|:55
+Delta time heuristic model:0.5
+Delta time planning model:0.5
+Delta time search-execution model:0.5
+Delta time validation model:0.5
+H1 Setup Time (msec): 41
+Setting horizon to:NaN
+Running WA-STAR
+h(n = s_0)=648.0
+f(n) = 648.0 (Expanded Nodes: 0, Evaluated States: 0, Time: 0.071) Frontier Size: 0
+f(n) = 2479.0 (Expanded Nodes: 1, Evaluated States: 8, Time: 0.117) Frontier Size: 7
+-------------Time: 10s ; Expanded Nodes: 10742 (Avg-Speed 1074.0 n/s); Evaluated States: 61869
+-------------Time: 20s ; Expanded Nodes: 22619 (Avg-Speed 1130.0 n/s); Evaluated States: 141959
+-------------Time: 30s ; Expanded Nodes: 37347 (Avg-Speed 1244.0 n/s); Evaluated States: 242795
+-------------Time: 40s ; Expanded Nodes: 54373 (Avg-Speed 1359.0 n/s); Evaluated States: 357065
+-------------Time: 50s ; Expanded Nodes: 67657 (Avg-Speed 1353.0 n/s); Evaluated States: 445819
+-------------Time: 60s ; Expanded Nodes: 82426 (Avg-Speed 1373.0 n/s); Evaluated States: 542105
+-------------Time: 70s ; Expanded Nodes: 100429 (Avg-Speed 1434.0 n/s); Evaluated States: 632928
+-------------Time: 80s ; Expanded Nodes: 124580 (Avg-Speed 1557.0 n/s); Evaluated States: 713356
+-------------Time: 90s ; Expanded Nodes: 143698 (Avg-Speed 1596.0 n/s); Evaluated States: 816648
+-------------Time: 100s ; Expanded Nodes: 166888 (Avg-Speed 1668.0 n/s); Evaluated States: 933392
+Extracting plan with execution delta: 0.5
+Problem Solved
+
+Found Plan:
+0: (prep_drink_cold_start drink2 barman)
+0: -----waiting---- [3.0]
+3.0: (prep_drink_end drink2 bar)
+3.0: (pick_drink drink2 bar waiter)
+3.0: (move_start bar table1 waiter)
+3.0: -----waiting---- [4.0]
+4.0: (move_end bar table1 waiter)
+4.0: (serve_drink waiter drink2 table1 barman)
+4.0: (move_start table1 bar waiter)
+4.0: -----waiting---- [5.0]
+5.0: (move_end table1 bar waiter)
+5.0: (prep_drink_cold_start drink4 barman)
+5.0: -----waiting---- [8.0]
+8.0: (prep_drink_end drink4 bar)
+8.0: (pick_drink drink4 bar waiter)
+8.0: (move_start bar table2 waiter)
+8.0: -----waiting---- [9.0]
+9.0: (move_end bar table2 waiter)
+9.0: (move_start table2 table4 waiter)
+9.0: -----waiting---- [9.5]
+9.5: (move_end table2 table4 waiter)
+9.5: (serve_drink waiter drink4 table4 barman)
+9.5: (move_start table4 table2 waiter)
+9.5: -----waiting---- [10.0]
+10.0: (move_end table4 table2 waiter)
+10.0: (clean_table_start table2 waiter)
+10.0: -----waiting---- [12.0]
+12.0: (clean_table_end table2 waiter)
+12.0: (move_start table2 bar waiter)
+12.0: -----waiting---- [13.0]
+13.0: (move_end table2 bar waiter)
+13.0: (prep_drink_cold_start drink1 barman)
+13.0: -----waiting---- [16.0]
+16.0: (prep_drink_end drink1 bar)
+16.0: (pick_drink drink1 bar waiter)
+16.0: (move_start bar table1 waiter)
+16.0: -----waiting---- [17.0]
+17.0: (move_end bar table1 waiter)
+17.0: (serve_drink waiter drink1 table1 barman)
+17.0: (drinking_start table1)
+17.0: (move_start table1 bar waiter)
+17.0: -----waiting---- [18.0]
+18.0: (move_end table1 bar waiter)
+18.0: (pick_biscuit waiter bar table1 biscuit1 drink1)
+18.0: (move_start bar table1 waiter)
+18.0: -----waiting---- [19.0]
+19.0: (move_end bar table1 waiter)
+19.0: (serve_biscuit waiter table1 drink1 biscuit1)
+19.0: (move_start table1 bar waiter)
+19.0: -----waiting---- [20.0]
+20.0: (move_end table1 bar waiter)
+20.0: (pick_biscuit waiter bar table1 biscuit2 drink2)
+20.0: (move_start bar table1 waiter)
+20.0: -----waiting---- [21.0]
+21.0: (move_end bar table1 waiter)
+21.0: (drinking_end table1)
+21.0: (serve_biscuit waiter table1 drink2 biscuit2)
+21.0: (clean_request table1)
+21.0: (clean_table_start table1 waiter)
+21.0: -----waiting---- [23.0]
+23.0: (clean_table_end table1 waiter)
+23.0: (move_start table1 bar waiter)
+23.0: -----waiting---- [24.0]
+24.0: (move_end table1 bar waiter)
+24.0: (prep_drink_cold_start drink3 barman)
+24.0: -----waiting---- [27.0]
+27.0: (prep_drink_end drink3 bar)
+27.0: (pick_drink drink3 bar waiter)
+27.0: (move_start bar table1 waiter)
+27.0: -----waiting---- [28.0]
+28.0: (move_end bar table1 waiter)
+28.0: (move_start table1 table4 waiter)
+28.0: -----waiting---- [28.5]
+28.5: (move_end table1 table4 waiter)
+28.5: (serve_drink waiter drink3 table4 barman)
+28.5: (move_start table4 table2 waiter)
+28.5: -----waiting---- [29.0]
+29.0: (move_end table4 table2 waiter)
+29.0: (move_start table2 bar waiter)
+29.0: -----waiting---- [30.0]
+30.0: (move_end table2 bar waiter)
+30.0: (pick_biscuit waiter bar table4 biscuit3 drink3)
+30.0: (move_start bar table1 waiter)
+30.0: -----waiting---- [31.0]
+31.0: (move_end bar table1 waiter)
+31.0: (prep_drink_warm_start drink5 barman)
+31.0: -----waiting---- [31.5]
+31.5: (drinking_start table4)
+31.5: -----waiting---- [34.5]
+34.5: (move_start table1 table4 waiter)
+34.5: -----waiting---- [35.0]
+35.0: (move_end table1 table4 waiter)
+35.0: (serve_biscuit waiter table4 drink3 biscuit3)
+35.0: (move_start table4 table1 waiter)
+35.0: -----waiting---- [35.5]
+35.5: (move_end table4 table1 waiter)
+35.5: (drinking_end table4)
+35.5: (move_start table1 bar waiter)
+35.5: -----waiting---- [36.0]
+36.0: (prep_drink_end drink5 bar)
+36.0: (cooling_start drink5 bar)
+36.0: -----waiting---- [36.5]
+36.5: (move_end table1 bar waiter)
+36.5: (pick_drink drink5 bar waiter)
+36.5: (move_start bar table1 waiter)
+36.5: -----waiting---- [37.5]
+37.5: (move_end bar table1 waiter)
+37.5: (move_start table1 table3 waiter)
+37.5: -----waiting---- [38.0]
+38.0: (move_end table1 table3 waiter)
+38.0: (serve_drink waiter drink5 table3 barman)
+38.0: (move_start table3 table1 waiter)
+38.0: (cooling_cancel drink5 table3)
+38.0: -----waiting---- [38.5]
+38.5: (move_end table3 table1 waiter)
+38.5: (move_start table1 bar waiter)
+38.5: -----waiting---- [39.5]
+39.5: (move_end table1 bar waiter)
+39.5: (pick_biscuit waiter bar table4 biscuit4 drink4)
+39.5: (move_start bar table1 waiter)
+39.5: -----waiting---- [40.5]
+40.5: (move_end bar table1 waiter)
+40.5: (prep_drink_warm_start drink8 barman)
+40.5: -----waiting---- [44.5]
+44.5: (move_start table1 table4 waiter)
+44.5: -----waiting---- [45.0]
+45.0: (move_end table1 table4 waiter)
+45.0: (serve_biscuit waiter table4 drink4 biscuit4)
+45.0: (clean_request table4)
+45.0: (move_start table4 table2 waiter)
+45.0: -----waiting---- [45.5]
+45.5: (prep_drink_end drink8 bar)
+45.5: (cooling_start drink8 bar)
+45.5: (move_end table4 table2 waiter)
+45.5: (move_start table2 bar waiter)
+45.5: -----waiting---- [46.5]
+46.5: (move_end table2 bar waiter)
+46.5: (pick_drink drink8 bar waiter)
+46.5: (move_start bar table1 waiter)
+46.5: -----waiting---- [47.5]
+47.5: (move_end bar table1 waiter)
+47.5: (move_start table1 table3 waiter)
+47.5: -----waiting---- [48.0]
+48.0: (move_end table1 table3 waiter)
+48.0: (serve_drink waiter drink8 table3 barman)
+48.0: (move_start table3 table2 waiter)
+48.0: (cooling_cancel drink8 table3)
+48.0: -----waiting---- [48.5]
+48.5: (move_end table3 table2 waiter)
+48.5: (prep_drink_warm_start drink7 barman)
+48.5: -----waiting---- [53.5]
+53.5: (prep_drink_end drink7 bar)
+53.5: (cooling_start drink7 bar)
+53.5: (move_start table2 bar waiter)
+53.5: -----waiting---- [54.5]
+54.5: (move_end table2 bar waiter)
+54.5: (pick_drink drink7 bar waiter)
+54.5: (move_start bar table1 waiter)
+54.5: -----waiting---- [55.5]
+55.5: (move_end bar table1 waiter)
+55.5: (move_start table1 table3 waiter)
+55.5: -----waiting---- [56.0]
+56.0: (move_end table1 table3 waiter)
+56.0: (serve_drink waiter drink7 table3 barman)
+56.0: (move_start table3 table4 waiter)
+56.0: (cooling_cancel drink7 table3)
+56.0: -----waiting---- [56.5]
+56.5: (move_end table3 table4 waiter)
+56.5: (prep_drink_warm_start drink6 barman)
+56.5: -----waiting---- [59.5]
+59.5: (clean_table_start table4 waiter)
+59.5: -----waiting---- [61.5]
+61.5: (prep_drink_end drink6 bar)
+61.5: (cooling_start drink6 bar)
+61.5: (clean_table_end table4 waiter)
+61.5: (move_start table4 table1 waiter)
+61.5: -----waiting---- [62.0]
+62.0: (move_end table4 table1 waiter)
+62.0: (move_start table1 bar waiter)
+62.0: -----waiting---- [63.0]
+63.0: (move_end table1 bar waiter)
+63.0: (pick_drink drink6 bar waiter)
+63.0: (move_start bar table1 waiter)
+63.0: -----waiting---- [64.0]
+64.0: (move_end bar table1 waiter)
+64.0: (move_start table1 table3 waiter)
+64.0: -----waiting---- [64.5]
+64.5: (move_end table1 table3 waiter)
+64.5: (serve_drink waiter drink6 table3 barman)
+64.5: (drinking_start table3)
+64.5: (cooling_cancel drink6 table3)
+64.5: -----waiting---- [68.5]
+68.5: (drinking_end table3)
+68.5: (clean_request table3)
+68.5: (clean_table_start table3 waiter)
+68.5: -----waiting---- [72.5]
+72.5: (clean_table_end table3 waiter)
+
+Plan-Length:288
+Elapsed Time: 72.5
+Metric (Search):226.0
+Planning Time (msec): 106026
+Heuristic Time (msec): 94970
+Search Time (msec): 103705
+Expanded Nodes:194325
+States Evaluated:992826
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:66658
+Number of Duplicates detected:205760

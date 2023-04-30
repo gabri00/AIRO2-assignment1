@@ -21,39 +21,38 @@
 
    (:predicates
       ; Drink predicates
-      (cold ?d - drink)
-      (warm ?d - drink)
-      (ready_drink ?d - drink)
-      (preparing ?d - drink)
-      (serving ?d - drink)
-      (cooling ?d - drink)
-      (cooled ?d - drink)
-      (at_drink ?d - drink ?l - location)
+      (cold ?d - drink) ; drink is cold
+      (warm ?d - drink) ; drink is warm
+      (ready_drink ?d - drink)   ; drink is ready to be served
+      (preparing ?d - drink)  ; drink is being prepared
+      (serving ?d - drink) ; drink is being served
+      (cooling ?d - drink) ; (warm) drink is cooling
+      (cooled ?d - drink)  ; (warm) drink became cold, thus can't be served anymore
+      (at_drink ?d - drink ?l - location) ; drink is at a location
 
       ; Finish drink predicates
-      (drinking ?t - table)
-      (finished_drinking ?t - table)
+      (drinking ?t - table) ; last drink served at a table is being drank
+      (finished_drinking ?t - table)   ; last drink at a table was drank
 
       ; Robot predicates
-      (free ?r - robot)
-      (at_waiter ?l - location)
+      (free ?r - robot) ; robot isn't performing any action
+      (at_waiter ?l - location)  ; waiter is at a location
 
       ; Move predicates
-      (connected ?from ?to - location)
-      (moving ?from ?to - location)
+      (connected ?from ?to - location) ; two locations are connected
+      (moving ?from ?to - location) ; waiter is moving between two locations
 
       ; Clean predicates
-      (to_clean ?t - table)
-      (cleaning ?t - table)
-      (cleaned ?t - table)
+      (to_clean ?t - table)   ; table needs to be cleaned
+      (cleaning ?t - table)   ; waiter is cleaning a table
+      (cleaned ?t - table) ; table has been cleaned
    
       ; Biscuit predicates
-      (serving_biscuit ?b - biscuit)
-      (pair ?d - drink ?b - biscuit)
-      (at_biscuit ?b - biscuit ?l - location)
+      (serving_biscuit ?b - biscuit)   ; biscuit is being served
+      (pair ?d - drink ?b - biscuit)   ; pairs a (cold) drink with a biscuit
+      (at_biscuit ?b - biscuit ?l - location)   ; biscuit is at a location
 
-      ; Flag to prioritize warm drinks
-      (priority_warm)
+      (priority_warm) ; Flag to prioritize serving warm drinks
    )
 
    (:functions
@@ -62,14 +61,14 @@
       (move_time ?from ?to - location) ; time to move between two locations
       (cleaning_time ?t - table)       ; time to clean a table
       (prep_time ?d - drink)         ; time to prepare a drink
-      (steps ?w)                    ; number of steps a waiter can do
+      (steps ?w)                    ; number of move actions a waiter can perform
       (cooling_time ?d - drink)     ; time to cool a drink
       (drinking_time ?t - drink)       ; time to drink a drink
-      (drinks_to_serve_at_table ?t - table)     ; number of drinks to serve at a table
-      (biscuits_to_serve_at_table ?t - table)   ; number of biscuits to serve at a table
+      (drinks_to_serve_at_table ?t - table)     ; number of drinks to be served at a table
+      (biscuits_to_serve_at_table ?t - table)   ; number of biscuits to be served at a table
    )
 
-; MOVE WAITER
+; MOVE WAITER -> action, process, event (waiter moves between locations only if it has steps left)
 
    (:action move_start
       :parameters (?from ?to - location ?w - waiter)
@@ -109,7 +108,7 @@
       )
    )
 
-; CLEAN TABLE
+; CLEAN TABLE -> action, process, event (waiter cleans a table)
 
    (:action clean_table_start
       :parameters (?t - table ?w - waiter)
@@ -130,7 +129,7 @@
    )
 
    (:process clean_table_process
-      :parameters (?t - table ?w - waiter)
+      :parameters (?t - table)
       :precondition (and
          (cleaning ?t)
          (at_waiter ?t)
@@ -155,7 +154,7 @@
       )
    )
 
-; PREPARE DRINK
+; PREPARE DRINK -> action, process, event (barman prepares a cold/warm drink)
 
    (:action prep_drink_cold_start
       :parameters (?d - drink ?b - barman)
@@ -212,7 +211,7 @@
       )
    )
 
-; SERVE DRINK
+; PICK/SERVE DRINK -> action, action (waiter picks a drink from the bar and serves it to a table)
 
    (:action pick_drink
       :parameters (?d - drink ?l - bar ?w - waiter)
@@ -249,7 +248,7 @@
       )
    )
 
-; SERVE BISCUIT
+; PICK/SERVE BISCUIT -> action, action (waiter picks a biscuit from the bar and serves it to a table, only after the drink paired with it has been served)
 
    (:action pick_biscuit
       :parameters (?w - waiter ?l - bar ?t - table ?b - biscuit ?d - drink)
@@ -290,7 +289,7 @@
       )
    )
 
-; COOLING
+; COOLING -> event, process, (event), event (drink cooling starts immediately after it has been prepared, the drink must be served before it has cooled, so the event cooling_end should never be reached)
 
    (:event cooling_start
       :parameters (?d - drink ?l - bar)
@@ -344,7 +343,7 @@
       )
    )
 
-; DRINKING
+; DRINKING -> action, process, event, action (after the last drink at the table has been drank, the table has to be cleaned)
 
    (:action drinking_start
       :parameters (?t - table)

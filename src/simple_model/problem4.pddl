@@ -1,4 +1,4 @@
-(define (problem CoffeeShop_prob)
+(define (problem CoffeeShop_problem4)
     (:domain CoffeeShop)
 
     (:objects
@@ -10,7 +10,7 @@
     )
 
     (:init
-        ; define connection between locations
+        ; define connection between locations (symmetric)
         (connected bar table1) (connected table1 bar)
         (connected bar table2) (connected table2 bar)
         ; (connected bar table3) (connected table3 bar)
@@ -25,7 +25,7 @@
 
         (connected table3 table4) (connected table4 table3)
 
-        ; define distance between locations
+        ; define distance between two locations (symmetric)
         (= (distance bar table1) 2) (= (distance table1 bar) 2)
         (= (distance bar table2) 2) (= (distance table2 bar) 2)
         ; (= (distance bar table3) 4) (= (distance table3 bar) 4)
@@ -40,35 +40,43 @@
 
         (= (distance table3 table4) 1) (= (distance table4 table3) 1)
 
-        ; define area of tables
+        ; define the area of tables
         (= (table_area table1) 1)
         (= (table_area table2) 1)
         (= (table_area table3) 2)
         (= (table_area table4) 1)
 
-        ; waiter initially free and at bar
-        (free barman) (free waiter)
-
-        (at_waiter bar)
-
-        ; waiter can't move at start
+        ; prevent the waiter to make random moves at the beginning
         (= (steps waiter) 0)
 
-        ; drinks to be served
+        ; barman and waiter initially free
+        (free barman)
+        (free waiter)
+
+        ; waiter initially at bar
+        (at_waiter bar)
+
+        ; drinks to serve
         (cold drink1) (cold drink2) (cold drink3) (cold drink4)
         (warm drink5) (warm drink6) (warm drink7) (warm drink8)
 
-        ; tables to be cleaned
+        ; tables to clean
         (to_clean table2)
     )
 
     (:goal
         (and
+            ; drink1 and drink2 served at table1
             (at_drink drink1 table1) (at_drink drink2 table1)
+
+            ; drink3 and drink4 served at table4
             (at_drink drink3 table4) (at_drink drink4 table4)
+
+            ; drink5, drink6, drink7 and drink8 served at table3
             (at_drink drink5 table3) (at_drink drink6 table3)
             (at_drink drink7 table3) (at_drink drink8 table3)
 
+            ; table2 cleaned
             (cleaned table2)
         )
     )
