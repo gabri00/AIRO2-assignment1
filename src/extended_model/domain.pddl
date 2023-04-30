@@ -199,7 +199,7 @@
    )
 
    (:event prep_drink_end
-      :parameters (?d - drink ?l - bar ?w - waiter)
+      :parameters (?d - drink ?l - bar)
       :precondition (and
          (preparing ?d)
          (<= (prep_time ?d) 0)
