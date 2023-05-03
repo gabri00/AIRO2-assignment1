@@ -7,9 +7,9 @@ Help()
     echo $'Syntax: ./run.bash [-g|w|a|h] <domain> <problem>\n'
     echo $'Options:'
     echo $'-g\tUses Greedy Best First Search as search algorithm'
-    echo $'-w\tUses WA* as search algorithm'
-    echo $'-a\tRun in anytime mode, Incrementally tries to find a lower bound.\n\tDoes not stop until the user decides so!'
-    echo $'-h\tPrint this help.\n'
+    echo $'-w\tUses wA* as search algorithm'
+    echo $'-a\tRuns in anytime mode, incrementally tries to find a lower bound.\n\tDoes not stop until the user decides so!'
+    echo $'-h\tPrints this help.\n'
 }
 
 if [ $# -gt 1 ] ; then
@@ -36,7 +36,7 @@ case $1 in
             exit 1
         fi
         echo $'Running with WA*\n'
-        java -jar ENHSP/enhsp.jar -o $2 -f $3 -s WAStar -d 0.5 -pe > $results_path/$filename-wa\*.txt
+        java -jar ENHSP/enhsp.jar -o $2 -f $3 -s WAStar -d 0.5 -pe > $results_path/$filename-wAStar.txt
         ;;
     -a) # Anytime
         if [ $# -lt 3 ] ; then
